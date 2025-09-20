@@ -21,6 +21,10 @@ int main(int argc, char* argv[]) {
     Tools datos = leerFichero(nombreFichero);
     cout << "Fichero leído correctamente." << endl;
 
+    for (const Estado* estado : datos.estados) {
+      cout << *estado << endl;
+    }
+
     // Aquí se puede continuar con la lógica del autómata utilizando los datos leídos
     return 0;
   } catch (const exception& e) {

@@ -8,3 +8,18 @@
 void Estado::agregarTransicion(const Transicion& transicion) {
   transiciones_.insert(transicion);
 }
+
+/**
+ * @overload Sobrecarga del operador <<
+ */
+ostream& operator<<(ostream& os, const Estado& estado) {
+  os << "---- Transiciones del estado " << estado.id_ << " ----" << endl;
+  os << "(" << estado.id_;
+  for (auto it = estado.transiciones_.begin(); it != estado.transiciones_.end(); ++it) {
+    os << *it;
+    if (next(it) != estado.transiciones_.end()) {
+      os << "\n(" << estado.id_;
+    }
+  }
+  return os;
+}

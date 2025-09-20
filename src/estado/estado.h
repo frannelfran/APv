@@ -22,13 +22,16 @@ class Estado {
 
     // Getters
     inline string getId() const { return id_; }
-    inline bool esInicial() const { return inicial_; }
 
     // Setters
     inline void setInicial() { inicial_ = true; }
 
     // Métodos
     void agregarTransicion(const Transicion& transicion);
+
+    // Sobrecarga de operadores
+    friend ostream& operator<<(ostream& os, const Estado& estado);
+    inline bool operator<(const Estado& other) const { return id_ < other.id_; }
 
   private:
     string id_;
