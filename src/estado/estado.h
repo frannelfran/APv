@@ -18,7 +18,11 @@ class Estado {
   public:
     // Constructor y destructor
     Estado() = default;
-    Estado(const string& id, const set<Transicion> transiciones, const bool& inicial = false);
+    Estado(const string& id, const bool& inicial = false) : id_(id), inicial_(inicial) {}
+
+    // Getters
+    inline string getId() const { return id_; }
+    inline bool esInicial() const { return inicial_; }
 
   private:
     string id_;

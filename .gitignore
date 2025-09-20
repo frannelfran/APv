@@ -45,3 +45,6 @@
 
 #Ejecutables
 apv
+
+# Debug files
+.vscode/
