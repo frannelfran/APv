@@ -35,24 +35,18 @@ Tools leerFichero(const string& nombreFichero) {
 
   // Leo el estado inicial
   getline(file, linea);
-  string estado_inicial_id = linea;
+  comprobarEstado(linea);
   for (Estado* estado : datos.estados) {
-    if (estado->getId() == estado_inicial_id) {
+    if (estado->getId() == linea) {
       estado->setInicial();
       break;
-    }
-    else {
-      throw runtime_error("El estado inicial " + estado_inicial_id + " no está en el conjunto de estados.");
     }
   }
 
   // Leo el símbolo inicial de la pila
   getline(file, linea);
-  if (datos.alfabetos.second.pertenece(linea[0])) {
-    datos.topPila = linea;
-  } else {
-    throw runtime_error("El símbolo inicial de la pila " + linea + " no pertenece al alfabeto de la pila.");
-  }
+  comprobarSimbolo(linea[0]);
+  datos.topPila = linea;
 
   // Leo las transiciones
   leerTransiciones(istringstream(linea));
@@ -98,7 +92,58 @@ void leerAlfabeto(istringstream is) {
  */
 void leerTransiciones(istringstream is) {
   string linea;
+  int id = 1;
   while (is >> linea) {
+    string actual, simbolo_entrada, simbolo_pila, siguiente, nuevo_simbolo_pila;
+    is >> actual >> simbolo_entrada >> simbolo_pila >> siguiente >> nuevo_simbolo_pila;
     
+    // Compruebo los estados
+    comprobarEstado(actual), comprobarEstado(siguiente);
+    // Compruebo los símbolos
+    
+
+
+  }
+}
+
+/**
+ * @brief Función para combrobar que los estados pertencen al conjunto de estados
+ * @param actual Estado actual
+ * @param siguiente Estado siguiente
+ * @return void
+ */
+void comprobarEstado(const string& estado) {
+  bool encontrado = false;
+  for (Estado* e : datos.estados) {
+    if (e->getId() == estado) {
+      encontrado = true;
+    }
+  }
+
+  if (!encontrado) {
+    throw runtime_error("El estado " + estado + " no está en el conjunto de estados.");
+  }
+}
+
+/**
+ * @brief Función para comprobar que el símbolo pertenece al alfabeto del autómata
+ * @param simbolo Símbolo a comprobar
+ * @return void
+ */
+void comprobarSimbolo(const char& simbolo) {
+  bool simboloAutomata = false, simboloPila = false;
+
+  if (simbolo == '.') { // epsilon siempre pertenece
+    return;
+  } else if (datos.alfabetos.first.pertenece(simbolo)) {
+    simboloAutomata = true;
+  } else if (datos.alfabetos.second.pertenece(simbolo)) {
+    simboloPila = true;
+  }
+
+  if (!simboloAutomata) {
+    throw runtime_error("El símbolo de entrada " + string(1, simbolo) + " no pertenece al alfabeto del autómata.");
+  } else if (!simboloPila) {
+    throw runtime_error("El símbolo de la pila " + string(1, simbolo) + " no pertenece al alfabeto de la pila.");
   }
 }

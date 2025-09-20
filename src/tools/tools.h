@@ -23,5 +23,7 @@ Tools leerFichero(const string& nombreFichero);
 void leerEstados(istringstream is);
 void leerAlfabeto(istringstream is);
 void leerTransiciones(istringstream is);
+void comprobarEstado(const string& estado);
+void comprobarSimbolo(const char& simbolo);
 
 #endif // TOOLS_H
