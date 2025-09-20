@@ -19,9 +19,9 @@ int main(int argc, char* argv[]) {
   try {
     string nombreFichero = argv[1];
     Tools datos = leerFichero(nombreFichero);
+    cout << "Fichero leído correctamente." << endl;
 
     // Aquí se puede continuar con la lógica del autómata utilizando los datos leídos
-
     return 0;
   } catch (const exception& e) {
     cerr << "Error: " << e.what() << endl;

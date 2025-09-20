@@ -49,7 +49,13 @@ Tools leerFichero(const string& nombreFichero) {
   datos.topPila = linea;
 
   // Leo las transiciones
-  leerTransiciones(istringstream(linea));
+  int id = 1;
+  while (getline(file, linea)) {
+    if (linea.empty() || linea[0] == '#') {
+      continue;
+    }
+    leerTransiciones(istringstream(linea), id++);
+  }
   return datos;
 }
 
@@ -88,23 +94,36 @@ void leerAlfabeto(istringstream is) {
 /**
  * @brief Función para leer las transiciones del fichero
  * @param is Stream de entrada
+ * @param id Identificador de la transición
  * @return void
  */
-void leerTransiciones(istringstream is) {
-  string linea;
-  int id = 1;
-  while (is >> linea) {
-    string actual, simbolo_entrada, simbolo_pila, siguiente, nuevo_simbolo_pila;
-    is >> actual >> simbolo_entrada >> simbolo_pila >> siguiente >> nuevo_simbolo_pila;
-    
-    // Compruebo los estados
-    comprobarEstado(actual), comprobarEstado(siguiente);
-    // Compruebo los símbolos
-    
 
 
+void leerTransiciones(istringstream is, int id) {
+  string actual, simbolo_entrada, simboloPila, siguiente, topPila;
+  is >> actual >> simbolo_entrada >> simboloPila >> siguiente >> topPila;
+  // Compruebo los estados
+  comprobarEstado(actual), comprobarEstado(siguiente);
+  // Compruebo los símbolos
+  comprobarSimbolo(simbolo_entrada[0]), comprobarSimbolo(simboloPila[0]), comprobarSimbolo(topPila[0]);
+  // Busco el estado siguiente
+  Estado* estadoSiguiente = nullptr;
+  for (Estado* e : datos.estados) {
+    if (e->getId() == siguiente) {
+      estadoSiguiente = e;
+      break;
+    }
+  }
+  // Agrego la transicion
+  Transicion transicion(id, simbolo_entrada[0], simboloPila[0], estadoSiguiente, topPila);
+  for (Estado* e : datos.estados) {
+    if (e->getId() == actual) {
+      e->agregarTransicion(transicion); // Pasamos el objeto, no el puntero
+      break;
+    }
   }
 }
+
 
 /**
  * @brief Función para combrobar que los estados pertencen al conjunto de estados
@@ -137,8 +156,10 @@ void comprobarSimbolo(const char& simbolo) {
     return;
   } else if (datos.alfabetos.first.pertenece(simbolo)) {
     simboloAutomata = true;
+    simboloPila = true; // Pertenece al automata
   } else if (datos.alfabetos.second.pertenece(simbolo)) {
     simboloPila = true;
+    simboloAutomata = true; // Pertenece al automata
   }
 
   if (!simboloAutomata) {
