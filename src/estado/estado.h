@@ -24,6 +24,9 @@ class Estado {
     inline string getId() const { return id_; }
     inline bool esInicial() const { return inicial_; }
 
+    // Setters
+    void setInicial() { inicial_ = true; }
+
   private:
     string id_;
     set<Transicion> transiciones_;

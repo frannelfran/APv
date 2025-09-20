@@ -20,9 +20,6 @@ int main(int argc, char* argv[]) {
     string nombreFichero = argv[1];
     Tools datos = leerFichero(nombreFichero);
 
-    cout << "Archivo leído correctamente." << endl;
-    cout << "Estados encontrados: " << datos.estados.size() << endl;
-
     // Aquí se puede continuar con la lógica del autómata utilizando los datos leídos
 
     return 0;

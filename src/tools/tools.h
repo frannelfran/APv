@@ -16,12 +16,12 @@
 struct Tools {
   pair<Alfabeto, Alfabeto> alfabetos;
   set<Estado*> estados;
-  Estado* estado_inicial;
   string topPila;
 };
 
 Tools leerFichero(const string& nombreFichero);
-void leerEstados(istringstream& is);
+void leerEstados(istringstream is);
 void leerAlfabeto(istringstream is);
+void leerTransiciones(istringstream is);
 
 #endif // TOOLS_H

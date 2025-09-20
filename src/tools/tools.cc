@@ -23,27 +23,48 @@ Tools leerFichero(const string& nombreFichero) {
     break;
   }
   // Leo los estados
-  istringstream iss(linea);
-  leerEstados(iss);
+  leerEstados(istringstream(linea));
 
   // Leo el alfabeto del autómata
   getline(file, linea);
   leerAlfabeto(istringstream(linea));
 
+  // Leo el alfabeto de la pila
+  getline(file, linea);
+  leerAlfabeto(istringstream(linea));
 
+  // Leo el estado inicial
+  getline(file, linea);
+  string estado_inicial_id = linea;
+  for (Estado* estado : datos.estados) {
+    if (estado->getId() == estado_inicial_id) {
+      estado->setInicial();
+      break;
+    }
+    else {
+      throw runtime_error("El estado inicial " + estado_inicial_id + " no está en el conjunto de estados.");
+    }
+  }
+
+  // Leo el símbolo inicial de la pila
+  getline(file, linea);
+  if (datos.alfabetos.second.pertenece(linea[0])) {
+    datos.topPila = linea;
+  } else {
+    throw runtime_error("El símbolo inicial de la pila " + linea + " no pertenece al alfabeto de la pila.");
+  }
+
+  // Leo las transiciones
+  leerTransiciones(istringstream(linea));
   return datos;
 }
-
-
-
-
 
 /**
  * @brief Función para leer el conjunto de estados
  * @param is Stream de entrada
  * @return void
  */
-void leerEstados(istringstream& is) {
+void leerEstados(istringstream is) {
   string linea;
   set<Estado*> estados;
   while (is >> linea) {
@@ -67,5 +88,17 @@ void leerAlfabeto(istringstream is) {
     datos.alfabetos.first = alfabeto;
   } else {
     datos.alfabetos.second = alfabeto;
+  }
+}
+
+/**
+ * @brief Función para leer las transiciones del fichero
+ * @param is Stream de entrada
+ * @return void
+ */
+void leerTransiciones(istringstream is) {
+  string linea;
+  while (is >> linea) {
+    
   }
 }
