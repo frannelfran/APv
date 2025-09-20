@@ -1,8 +1,13 @@
 #pragma once
-#include "../estado/estado.h"
+#include <string>
 
 #ifndef TRANSICION_H
 #define TRANSICION_H
+
+using namespace std;
+
+// Forward declaration para evitar dependencia circular
+class Estado;
 
 /**
  * @class Transicion

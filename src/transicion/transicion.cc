@@ -1,4 +1,5 @@
 #include "transicion.h"
+#include "../estado/estado.h"
 
 /**
  * @brief Constructor de la clase Transicion
