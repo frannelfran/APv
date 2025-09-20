@@ -4,6 +4,10 @@
 #ifndef TRANSICION_H
 #define TRANSICION_H
 
+/**
+ * @class Transicion
+ * @brief Clase que representa una transición en un autómata
+ */
 class Transicion {
   public:
     // Constructor y destructor

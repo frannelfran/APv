@@ -8,6 +8,10 @@
 
 using namespace std;
 
+/**
+ * @class Estado
+ * @brief Clase que representa un estado en un autómata
+ */
 class Estado {
   public:
     // Constructor y destructor

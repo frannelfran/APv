@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/**
+ * @class Alfabeto
+ * @brief Clase que representa un alfabeto de símbolos
+ */
 class Alfabeto {
   public:
     // Constructor y destructor
