@@ -17,6 +17,9 @@ class Automata {
     Automata(const set<Estado*>& estados, const Alfabeto& alfabetoEntrada, const Alfabeto& alfabetoPila, const string& topPila);
     ~Automata() = default;
 
+    // Sobrecarga de operadores
+    friend ostream& operator<<(ostream& os, const Automata& automata);
+
   private:
     set<Estado*> estados_;
     Alfabeto alfabetoEntrada_;
