@@ -1,0 +1,13 @@
+# Automata por vaciado de pila 
+# epsilon esta representado por un .
+q0
+a b
+a b S B
+q0
+S
+q0 a a q0 .
+q0 b b q0 .
+q0 . S q0 aSB
+q0 . S q0 aB
+q0 . S q0 .
+q0 . B q0 b
