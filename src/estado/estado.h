@@ -25,11 +25,14 @@ class Estado {
     inline bool esInicial() const { return inicial_; }
 
     // Setters
-    void setInicial() { inicial_ = true; }
+    inline void setInicial() { inicial_ = true; }
+
+    // Métodos
+    void agregarTransicion(const Transicion& transicion);
 
   private:
     string id_;
-    set<Transicion> transiciones_;
+    set<Transicion> transiciones_; // Volvemos a objetos
     bool inicial_;
 };
 
