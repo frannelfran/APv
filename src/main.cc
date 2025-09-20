@@ -24,7 +24,8 @@ int main(int argc, char* argv[]) {
 
     // Creo el automata con los datos leídos
     Automata automata(datos.estados, datos.alfabetos.first, datos.alfabetos.second, datos.topPila);
-    cout << automata;
+    
+    
 
     return 0;
   } catch (const exception& e) {

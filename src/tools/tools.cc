@@ -140,6 +140,14 @@ void comprobarEstado(const string& estado) {
   }
 
   if (!encontrado) {
+    cerr << "Q -> {";
+    for (auto it = datos.estados.begin(); it != datos.estados.end(); ++it) {
+      cerr << (*it)->getId();
+      if (next(it) != datos.estados.end()) {
+        cerr << ", ";
+      }
+    }
+    cerr << "}" << endl;
     throw runtime_error("El estado " + estado + " no está en el conjunto de estados.");
   }
 }
@@ -150,21 +158,19 @@ void comprobarEstado(const string& estado) {
  * @return void
  */
 void comprobarSimbolo(const char& simbolo) {
-  bool simboloEntrada = false, simboloPila = false;
+  bool pertenece = false;
 
   if (simbolo == '.') { // epsilon siempre pertenece
     return;
   } else if (datos.alfabetos.first.pertenece(simbolo)) {
-    simboloEntrada = true;
-    simboloPila = true; // Pertenece al automata
+    pertenece = true;
   } else if (datos.alfabetos.second.pertenece(simbolo)) {
-    simboloPila = true;
-    simboloEntrada = true; // Pertenece al automata
+    pertenece = true;
   }
 
-  if (!simboloEntrada) {
-    throw runtime_error("El símbolo de entrada " + string(1, simbolo) + " no pertenece al alfabeto de entrada.");
-  } else if (!simboloPila) {
-    throw runtime_error("El símbolo de la pila " + string(1, simbolo) + " no pertenece al alfabeto de la pila.");
+  if (!pertenece) {
+    cerr << "Σ -> " << datos.alfabetos.first << endl;
+    cerr << "Γ -> " << datos.alfabetos.second << endl;
+    throw runtime_error("El símbolo '" + string(1, simbolo) + "' no pertenece a ningún alfabeto.");
   }
 }
