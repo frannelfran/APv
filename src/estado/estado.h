@@ -22,6 +22,7 @@ class Estado {
 
     // Getters
     inline string getId() const { return id_; }
+    inline bool esInicial() const { return inicial_; }
 
     // Setters
     inline void setInicial() { inicial_ = true; }

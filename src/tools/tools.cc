@@ -25,7 +25,7 @@ Tools leerFichero(const string& nombreFichero) {
   // Leo los estados
   leerEstados(istringstream(linea));
 
-  // Leo el alfabeto del autómata
+  // Leo el alfabeto de entrada
   getline(file, linea);
   leerAlfabeto(istringstream(linea));
 
@@ -150,20 +150,20 @@ void comprobarEstado(const string& estado) {
  * @return void
  */
 void comprobarSimbolo(const char& simbolo) {
-  bool simboloAutomata = false, simboloPila = false;
+  bool simboloEntrada = false, simboloPila = false;
 
   if (simbolo == '.') { // epsilon siempre pertenece
     return;
   } else if (datos.alfabetos.first.pertenece(simbolo)) {
-    simboloAutomata = true;
+    simboloEntrada = true;
     simboloPila = true; // Pertenece al automata
   } else if (datos.alfabetos.second.pertenece(simbolo)) {
     simboloPila = true;
-    simboloAutomata = true; // Pertenece al automata
+    simboloEntrada = true; // Pertenece al automata
   }
 
-  if (!simboloAutomata) {
-    throw runtime_error("El símbolo de entrada " + string(1, simbolo) + " no pertenece al alfabeto del autómata.");
+  if (!simboloEntrada) {
+    throw runtime_error("El símbolo de entrada " + string(1, simbolo) + " no pertenece al alfabeto de entrada.");
   } else if (!simboloPila) {
     throw runtime_error("El símbolo de la pila " + string(1, simbolo) + " no pertenece al alfabeto de la pila.");
   }
