@@ -2,7 +2,7 @@
 #include "../alfabeto/alfabeto.h"
 #include "../transicion/transicion.h"
 #include "../estado/estado.h"
-#include <stack>
+#include <stack> // Para la pila
 
 #ifndef AUTOMATA_H
 #define AUTOMATA_H

@@ -25,7 +25,17 @@ int main(int argc, char* argv[]) {
     // Creo el automata con los datos leídos
     Automata automata(datos.estados, datos.alfabetos.first, datos.alfabetos.second, datos.topPila);
     
+    cout << automata << endl;
+
+    string cadena;
     
+    while (true) {
+      cout << "Cadena ? (0 para salir) ";
+      cin >> cadena;
+      if (cadena == "0") {
+        break;
+      }
+    }
 
     return 0;
   } catch (const exception& e) {
