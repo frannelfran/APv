@@ -22,6 +22,7 @@ class Transicion {
 
     // Sobrecarga de operadores
     inline bool operator<(const Transicion& other) const { return id_ < other.id_; }
+    friend ostream& operator<<(ostream& os, const Transicion& transicion);
 
   private:
     int id_;
