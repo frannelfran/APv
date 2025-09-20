@@ -15,45 +15,28 @@ Tools leerFichero(const string& nombreFichero) {
   }
 
   string linea;
+  // Saltar los comentarios y líneas vacías
   while (getline(file, linea)) {
-    // Saltar los comentarios y líneas vacías
     if (linea.empty() || linea[0] == '#') {
       continue;
     }
-
-    set<Estado*> estados;
-    // Leo los estados
-    istringstream iss(linea);
-    leerEstados(iss);
-
-
-    // Leo el alfabeto
-    getline(file, linea);
-    set<char> simbolosAutomata;
-    for (char simbolo : linea) {
-      simbolosAutomata.insert(simbolo);
-    }
-    datos.alfabetoAutomata = Alfabeto(simbolosAutomata);
-    
+    break;
   }
+  // Leo los estados
+  istringstream iss(linea);
+  leerEstados(iss);
 
-
+  // Leo el alfabeto del autómata
+  getline(file, linea);
+  leerAlfabeto(istringstream(linea));
 
 
   return datos;
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
 
 /**
  * @brief Función para leer el conjunto de estados
@@ -67,4 +50,22 @@ void leerEstados(istringstream& is) {
     estados.insert(new Estado(linea));
   }
   datos.estados = estados;
+}
+
+/**
+ * @brief Función para leer los alfabetos del fichero
+ * @param is Stream de entrada
+ * @return void
+ */
+void leerAlfabeto(istringstream is) {
+  string linea;
+  Alfabeto alfabeto;
+  while (is >> linea) {
+    alfabeto.insertar(linea[0]);
+  }
+  if (datos.alfabetos.first.size() == 0) {
+    datos.alfabetos.first = alfabeto;
+  } else {
+    datos.alfabetos.second = alfabeto;
+  }
 }

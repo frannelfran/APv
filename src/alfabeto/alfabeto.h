@@ -15,11 +15,12 @@ class Alfabeto {
   public:
     // Constructor y destructor
     Alfabeto() = default;
-    Alfabeto(const set<char>& simbolos) : simbolos_(simbolos) {}
     ~Alfabeto() = default;
 
     // Métodos
+    inline void insertar(char simbolo) { simbolos_.insert(simbolo); }
     inline bool pertenece(char simbolo) const { return simbolos_.find(simbolo) != simbolos_.end(); }
+    inline size_t size() const { return simbolos_.size(); }
 
     // Sobrecarga de operadores
     friend ostream& operator<<(ostream& os, const Alfabeto& alfabeto);

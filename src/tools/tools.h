@@ -14,8 +14,7 @@
  * @brief Estructura para almacenar los datos del fichero de entrada
  */
 struct Tools {
-  Alfabeto alfabetoAutomata;
-  Alfabeto alfabetoPila;
+  pair<Alfabeto, Alfabeto> alfabetos;
   set<Estado*> estados;
   Estado* estado_inicial;
   string topPila;
@@ -23,5 +22,6 @@ struct Tools {
 
 Tools leerFichero(const string& nombreFichero);
 void leerEstados(istringstream& is);
+void leerAlfabeto(istringstream is);
 
 #endif // TOOLS_H
