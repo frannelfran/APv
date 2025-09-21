@@ -41,6 +41,7 @@ Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
 
   if (lecturaCadena_ == '.') {
     // No hago nada con la cadena
+    
   }
 
   // Apilamos los símbolos indicados en apilar_ (si no es epsilon)
