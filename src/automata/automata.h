@@ -27,6 +27,7 @@ class Automata {
     void ejecutar(string cadena);
     bool esValida(const string& cadena) const;
     void reiniciar();
+    void resetearPila();
     void mostrarTraza(const string& cadena, const vector<pair<string, Transicion>>& transiciones);
     vector<pair<string, Transicion>> obtenerTransicionesPosibles(string cadena);
 

@@ -31,6 +31,7 @@ Automata::Automata(const set<Estado*>& estados, const Alfabeto& alfabetoEntrada,
  * @return void
  */
 void Automata::ejecutar(string cadena) {
+  string cadenaOriginal = cadena;
   if (!esValida(cadena)) {
     throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
   }
@@ -38,43 +39,49 @@ void Automata::ejecutar(string cadena) {
   vector<pair<string, Transicion>> transicionesPosibles;
   vector<pair<string, Transicion>> transicionesNoUsadas;
 
-  while (!cadena.empty()) {
+  while (!cadena.empty() || !pila_.empty()) {
     char simbolo = cadena[0];
 
     // Recorro las transiciones del estado actual
     transicionesPosibles = obtenerTransicionesPosibles(cadena);
-    mostrarTraza(cadena, transicionesPosibles);
     // Miro en las posibles transiciones si hay alguna que no haya sido usada
     for (auto& it : transicionesPosibles) {
       if (!it.second.getUsada()) {
         cadena = it.first;
         estadoActual_ = it.second.ejecutar(pila_);
         break;
+      } else {
+        // Elimino la transicion de las posibles transiciones
+        transicionesPosibles.erase(remove(transicionesPosibles.begin(), transicionesPosibles.end(), it), transicionesPosibles.end());
       }
     }
+    mostrarTraza(cadena, transicionesPosibles);
 
     // Almaceno el resto de transiciones no usadas
-    for (auto& it : transicionesPosibles) {
+    for (auto it : transicionesPosibles) {
       if (!it.second.getUsada()) {
         transicionesNoUsadas.push_back(it);
       }
     }
 
+    if (cadena.empty() && !pila_.empty()) {
+      // Compruebo que existan transiciones disponibles
+      if (!transicionesNoUsadas.empty()) {
+        cadena = transicionesNoUsadas.front().first;
+        estadoActual_ = transicionesNoUsadas.front().second.getActual();
+        pila_ = transicionesNoUsadas.front().second.getPila();
+        // Compruebo si es la primera transición que se va a usar
+        if (cadenaOriginal == cadena) {
+          resetearPila();
+        }
+        transicionesNoUsadas.erase(transicionesNoUsadas.begin());
+        continue;
+      }
+    }
+
     // Avanzo en la cadena de entrada
     cadena.erase(0, 1);
-
-    // Cuento si quedan transiciones sin activar
-    if (cadena.empty() && !pila_.empty()) {
-      // Busco aquella transicion que todavía se pueda activar
-      cadena = transicionesNoUsadas[0].first;
-      estadoActual_ = transicionesNoUsadas[0].second.getActual();
-      // Quito esa transición de las no usadas
-      transicionesNoUsadas.erase(transicionesNoUsadas.begin());
-    }
   }
-  for (auto& it : transicionesNoUsadas) {
-        cout << it.first << " " << it.second.getId() << endl;
-      }
   mostrarTraza(cadena, transicionesPosibles);
   // Al finalizar la cadena, verifico si la pila está vacía
   if (!pila_.empty()) {
@@ -136,19 +143,26 @@ void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Tran
 }
 
 /**
+ * @brief Método para restablecer la pila al estado inicial
+ * @return void
+ */
+void Automata::resetearPila() {
+  while (!pila_.empty()) {
+    pila_.pop();
+  }
+  // Apilo el símbolo inicial de la pila
+  for (char simbolo : topPila_) {
+    pila_.push(simbolo);
+  }
+}
+
+/**
  * @brief Método para reiniciar el autómata a su estado inicial
  * @return void
  */
 void Automata::reiniciar() {
   // Reinicio la pila
-  while (!pila_.empty()) {
-    pila_.pop();
-  }
-
-  // Apilo el símbolo inicial de la pila
-  for (char simbolo : topPila_) {
-    pila_.push(simbolo);
-  }
+  resetearPila();
 
   // Reinicio el estado actual al estado inicial
   for (Estado* estado : estados_) {

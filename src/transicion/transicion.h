@@ -18,7 +18,7 @@ class Transicion {
   public:
     // Constructor y destructor
     Transicion() = default;
-    Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* actual,Estado* siguiente, const string& apilar);
+    Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* actual, Estado* siguiente, const string& apilar);
     ~Transicion() = default;
 
     // Getters
@@ -27,6 +27,7 @@ class Transicion {
     inline int getId() const { return id_; }
     inline bool getUsada() const { return usada_; }
     inline Estado* getActual() const { return actual_; }
+    stack<char> getPila() const { return pila_; }
 
     // Métodos
     Estado* ejecutar(stack<char>& pila);
@@ -44,6 +45,7 @@ class Transicion {
     Estado* siguiente_;
     string apilar_;
     bool usada_;
+    stack<char> pila_; // Pila asociada a la transición
 };
 
 #endif // TRANSICION_H
