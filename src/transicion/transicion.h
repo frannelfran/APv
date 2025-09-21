@@ -27,12 +27,11 @@ class Transicion {
     inline int getId() const { return id_; }
     inline bool getUsada() const { return usada_; }
     inline Estado* getActual() const { return actual_; }
-    stack<char> getPila() const { return pila_; }
+    inline stack<char> getPila() const { return pila_; }
+    inline string getCadena() const { return cadena_; }
 
     // Setters
-    inline void setUsada() { usada_ = true; }
     inline void setCadena(const string& cadena) { cadena_ = cadena; }
-    inline void setPila(const stack<char>& pila) { pila_ = pila; }
 
     // Métodos
     Estado* ejecutar(stack<char>& pila, string& cadena);

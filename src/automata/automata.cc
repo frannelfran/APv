@@ -32,30 +32,32 @@ Automata::Automata(const set<Estado*>& estados, const Alfabeto& alfabetoEntrada,
  */
 void Automata::ejecutar(string cadena) {
   string cadenaOriginal = cadena;
-
   if (!esValida(cadena)) {
     throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
   }
+	// Pongo la cadena original para comparar en backtracking
+	for (auto& e : estados_) {
+		for (auto& t : e->getTransiciones()) {
+			t.setCadena(cadenaOriginal);
+		};
+	}
 
   // ahora usamos copias de las transiciones
-  vector<pair<string, Transicion>> transicionesNoUsadas, transicionesUsadas;
+  vector<Transicion*> transicionesNoUsadas, transicionesUsadas;
 
   while (!cadena.empty() || !pila_.empty()) {
-    vector<pair<string, Transicion*>> transicionesPosibles = obtenerTransicionesPosibles(cadena, transicionesUsadas);
+    vector<Transicion*> transicionesPosibles = obtenerTransicionesPosibles(cadena, transicionesUsadas);
+
     mostrarTraza(cadena, transicionesPosibles);
 
     bool avance = false;
 
     for (auto& t : transicionesPosibles) {
-      if (!t.second->getUsada()) {
-        // Aplicar la transición (t.second es un objeto, no un puntero)
-        cadena = t.first;
-        estadoActual_ = t.second->ejecutar(pila_, cadena);
-        t.second->setUsada(); // Marco la transición como usada
-        t.second->setPila(pila_);
-        t.second->setCadena(cadena);
+      if (!t->getUsada()) {
+        // Aplicar la transición
+        estadoActual_ = t->ejecutar(pila_, cadena);
         avance = true;
-        transicionesUsadas.push_back(make_pair(cadena, *t.second));
+        transicionesUsadas.push_back(t);
         break;
       }
     }
@@ -66,9 +68,9 @@ void Automata::ejecutar(string cadena) {
         auto t = transicionesNoUsadas.front();
         transicionesNoUsadas.erase(transicionesNoUsadas.begin());
 
-        cadena = t.first;
-        estadoActual_ = t.second.getActual();
-        pila_ = t.second.getPila();
+        cadena = t->getCadena();
+        estadoActual_ = t->getActual();
+        pila_ = t->getPila();
 
         if (cadenaOriginal == cadena) {
           // Si hemos vuelto al estado inicial y la cadena es la original, salimos
@@ -83,13 +85,13 @@ void Automata::ejecutar(string cadena) {
 
     // Guardamos transiciones no usadas para backtracking
     for (auto& t : transicionesPosibles) {
-      if (find(transicionesUsadas.begin(), transicionesUsadas.end(), make_pair(t.first, *t.second)) == transicionesUsadas.end()) {
-        transicionesNoUsadas.push_back(make_pair(t.first, *t.second));
+      if (find(transicionesUsadas.begin(), transicionesUsadas.end(), t) == transicionesUsadas.end()) {
+        transicionesNoUsadas.push_back(t);
       }
     }
   }
 
-  mostrarTraza(cadena, vector<pair<string, Transicion*>>());
+  mostrarTraza(cadena, vector<Transicion*>());
 
   if (!pila_.empty()) {
     cout << "La cadena no pertenece al lenguaje" << endl;
@@ -104,31 +106,34 @@ void Automata::ejecutar(string cadena) {
  * @param cadena Cadena de entrada
  * @return Vector de pares (cadena restante, transición)
  */
-vector<pair<string, Transicion*>> Automata::obtenerTransicionesPosibles(string cadena, vector<pair<string, Transicion>> transicionesUsadas) {
-  vector<pair<string, Transicion*>> transicionesPosibles;
-  char simbolo = cadena[0];
+vector<Transicion*> Automata::obtenerTransicionesPosibles(string cadena, vector<Transicion*> transicionesUsadas) {
+	vector<Transicion*> transicionesPosibles;
+  char simbolo = cadena.empty() ? '.' : cadena[0];
+  
   for (auto& it : estadoActual_->getTransiciones()) {
     // Verifico si la transición es válida
     if ((it.getLecturaCadena() == simbolo || it.getLecturaCadena() == '.') &&
         (it.getLecturaPila() == (pila_.empty() ? '.' : pila_.top()) || it.getLecturaPila() == '.')) {
-      // Si la transición es válida, la agrego a las transiciones posibles
-      transicionesPosibles.push_back(make_pair(cadena, new Transicion(it)));
+      
+      // Verifico si esta transición ya ha sido usada en este contexto
+      bool yaUsada = false;
+      for (auto& u : transicionesUsadas) {
+        // Comparo ID de transición y estado actual (contexto similar)
+        if (u->getId() == it.getId() && u->getActual()->getId() == estadoActual_->getId()) {
+          yaUsada = true;
+          break;
+        }
+      }
+      
+      // Solo agrego la transición si no ha sido usada en este contexto
+      if (!yaUsada) {
+        Transicion* nuevaTransicion = new Transicion(it);
+        nuevaTransicion->setCadena(cadena); // Configuro la cadena actual
+        transicionesPosibles.push_back(nuevaTransicion);
+      }
     }
   }
-	// Verifico que las transiciones esocgidas no se hayan utilizado antes
-	for (auto& trans : transicionesUsadas) {
-		for (auto& t : transicionesPosibles) {
-			if (trans.first == t.first && trans.second.getId() == t.second->getId()) {
-        auto it_erase = std::find_if(transicionesPosibles.begin(), transicionesPosibles.end(),
-          [&t, &trans](const std::pair<std::string, Transicion*>& elem) {
-            return elem.first == trans.first && elem.second->getId() == trans.second.getId();
-          });
-        if (it_erase != transicionesPosibles.end()) {
-          transicionesPosibles.erase(it_erase);
-        }
-			}
-		}
-	}
+  
   return transicionesPosibles;
 }
 
@@ -138,7 +143,7 @@ vector<pair<string, Transicion*>> Automata::obtenerTransicionesPosibles(string c
  * @param transiciones Vector de transiciones disponibles
  * @return void
  */
-void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Transicion*>>& transiciones) {
+void Automata::mostrarTraza(const string& cadena, const vector<Transicion*>& transiciones) {
   // Mostrar el contenido de la pila
   string pilaStr;
   stack<char> pilaCopia = pila_;
@@ -163,7 +168,7 @@ void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Tran
   // Mostrar las transiciones posibles
   for (auto it = transiciones.begin(); it != transiciones.end(); ++it) {
     cout << left
-    << setw(0) << it->second->getId();
+    << setw(0) << (*it)->getId();
     if (next(it) != transiciones.end()) {
       cout << ", ";
     }

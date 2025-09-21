@@ -45,6 +45,10 @@ Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
     }
     cadena.erase(0, 1);
   }
+
+  pila_ = pila; // Actualizo la pila interna de la transición
+  cadena_ = cadena; // Actualizo la cadena interna de la transición
+  usada_ = true; // Marco la transición como usada
   return siguiente_;
 }
 
