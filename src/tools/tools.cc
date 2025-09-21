@@ -97,8 +97,6 @@ void leerAlfabeto(istringstream is) {
  * @param id Identificador de la transición
  * @return void
  */
-
-
 void leerTransiciones(istringstream is, int id) {
   string actual, simbolo_entrada, simboloPila, siguiente, topPila;
   is >> actual >> simbolo_entrada >> simboloPila >> siguiente >> topPila;
@@ -106,22 +104,30 @@ void leerTransiciones(istringstream is, int id) {
   comprobarEstado(actual), comprobarEstado(siguiente);
   // Compruebo los símbolos
   comprobarSimbolo(simbolo_entrada[0]), comprobarSimbolo(simboloPila[0]), comprobarSimbolo(topPila[0]);
-  // Busco el estado siguiente
-  Estado* estadoSiguiente = nullptr;
-  for (Estado* e : datos.estados) {
-    if (e->getId() == siguiente) {
-      estadoSiguiente = e;
-      break;
-    }
-  }
-  // Agrego la transicion
-  Transicion transicion(id, simbolo_entrada[0], simboloPila[0], estadoSiguiente, topPila);
+  // Busco el estaddo inicial y siguiente en el conjunto de estados
+  Estado* estadoSiguiente = buscarEstado(siguiente), *estadoActual = buscarEstado(actual);
+  // Creo la transición y la agrego la transicion
+  Transicion transicion(id, simbolo_entrada[0], simboloPila[0], estadoActual, estadoSiguiente, topPila);
   for (Estado* e : datos.estados) {
     if (e->getId() == actual) {
-      e->agregarTransicion(transicion); // Pasamos el objeto, no el puntero
+      e->agregarTransicion(transicion);
       break;
     }
   }
+}
+
+/**
+ * @brief Método para buscar un estado en el conjunto de estados
+ * @param estado Estado a buscar
+ * @return Puntero al estado si se encuentra, nullptr en caso contrario
+ */
+Estado* buscarEstado(const string& estado) {
+  for (Estado* e : datos.estados) {
+    if (e->getId() == estado) {
+      return e;
+    }
+  }
+  return nullptr;
 }
 
 

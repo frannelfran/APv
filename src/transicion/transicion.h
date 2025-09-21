@@ -18,7 +18,7 @@ class Transicion {
   public:
     // Constructor y destructor
     Transicion() = default;
-    Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* siguiente, const string& apilar);
+    Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* actual,Estado* siguiente, const string& apilar);
     ~Transicion() = default;
 
     // Getters
@@ -38,6 +38,7 @@ class Transicion {
     int id_;
     char lecturaCadena_;
     char lecturaPila_;
+    Estado* actual_;
     Estado* siguiente_;
     string apilar_;
     mutable bool usada_ = false;

@@ -9,11 +9,12 @@
  * @param siguiente Puntero al estado siguiente
  * @param apilar Cadena de símbolos a apilar en la pila
  */
-Transicion::Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* siguiente, const string& apilar) {
+Transicion::Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* actual, Estado* siguiente, const string& apilar) {
   id_ = id;
   lecturaCadena_ = lecturaCadena;
   lecturaPila_ = lecturaPila;
   siguiente_ = siguiente;
+  actual_ = actual; 
   apilar_ = apilar;
 }
 
@@ -51,7 +52,7 @@ Estado* Transicion::ejecutar(stack<char>& pila) const {
  * @overload Sobrecarga del operador de salida para imprimir una transición
  */
 ostream& operator<<(ostream& os, const Transicion& transicion) {
-  os << ", " << transicion.lecturaCadena_ << ", " << transicion.lecturaPila_ << ") -> (" 
+  os << "(" << transicion.actual_->getId() << ", " << transicion.lecturaCadena_ << ", " << transicion.lecturaPila_ << ") -> (" 
      << transicion.siguiente_->getId() << ", " << transicion.apilar_ << ") " << transicion.id_;
   return os;
 }
