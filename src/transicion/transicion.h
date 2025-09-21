@@ -29,11 +29,15 @@ class Transicion {
     inline Estado* getActual() const { return actual_; }
     stack<char> getPila() const { return pila_; }
 
+    // Setters
+    inline void setUsada() { usada_ = true; }
+    inline void setCadena(const string& cadena) { cadena_ = cadena; }
+    inline void setPila(const stack<char>& pila) { pila_ = pila; }
+
     // Métodos
     Estado* ejecutar(stack<char>& pila, string& cadena);
 
     // Sobrecarga de operadores
-    inline bool operator<(const Transicion& other) const { return id_ < other.id_; }
     inline bool operator==(const Transicion& other) const { return id_ == other.id_; }
     friend ostream& operator<<(ostream& os, const Transicion& transicion);
 
@@ -46,6 +50,7 @@ class Transicion {
     string apilar_;
     bool usada_;
     stack<char> pila_; // Pila asociada a la transición
+    string cadena_; // Cadena asociada a la transición
 };
 
 #endif // TRANSICION_H
