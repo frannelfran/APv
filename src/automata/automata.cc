@@ -37,19 +37,20 @@ void Automata::ejecutar(string cadena) {
     throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
   }
 
-  vector<pair<string, Transicion*>> transicionesNoUsadas;
+  // ahora usamos copias de las transiciones
+  vector<pair<string, Transicion>> transicionesNoUsadas;
 
   while (!cadena.empty() || !pila_.empty()) {
-    vector<pair<string, Transicion*>> transicionesPosibles = obtenerTransicionesPosibles(cadena);
+    vector<pair<string, Transicion>> transicionesPosibles = obtenerTransicionesPosibles(cadena);
     mostrarTraza(cadena, transicionesPosibles);
 
     bool avance = false;
 
     for (auto& t : transicionesPosibles) {
-      if (!t.second->getUsada()) {
-        // Aplicar la transición
+      if (!t.second.getUsada()) {
+        // Aplicar la transición (t.second es un objeto, no un puntero)
         cadena = t.first;
-        estadoActual_ = t.second->ejecutar(pila_, cadena);
+        estadoActual_ = t.second.ejecutar(pila_, cadena);
         avance = true;
         break;
       }
@@ -62,13 +63,13 @@ void Automata::ejecutar(string cadena) {
         transicionesNoUsadas.erase(transicionesNoUsadas.begin());
 
         cadena = t.first;
-        estadoActual_ = t.second->getActual();
-        pila_ = t.second->getPila();
+        estadoActual_ = t.second.getActual();
+        pila_ = t.second.getPila();
 
-				if (cadenaOriginal == cadena) {
-					// Si hemos vuelto al estado inicial y la cadena es la original, salimos
-					resetearPila();
-				}
+        if (cadenaOriginal == cadena) {
+          // Si hemos vuelto al estado inicial y la cadena es la original, salimos
+          resetearPila();
+        }
         continue;
       } else {
         // No hay más alternativas
@@ -78,13 +79,13 @@ void Automata::ejecutar(string cadena) {
 
     // Guardamos transiciones no usadas para backtracking
     for (auto& t : transicionesPosibles) {
-      if (!t.second->getUsada()) {
+      if (!t.second.getUsada()) {
         transicionesNoUsadas.push_back(t);
       }
     }
   }
 
-  mostrarTraza(cadena, vector<pair<string, Transicion*>>());
+  mostrarTraza(cadena, vector<pair<string, Transicion>>());
 
   if (!pila_.empty()) {
     cout << "La cadena no pertenece al lenguaje" << endl;
@@ -93,18 +94,19 @@ void Automata::ejecutar(string cadena) {
   }
 }
 
+
 /**
  * @brief Método para obtener las transiciones posibles desde el estado actual con un símbolo dado
  * @param cadena Cadena de entrada
  * @return Vector de pares (cadena restante, transición)
  */
-vector<pair<string, Transicion*>> Automata::obtenerTransicionesPosibles(string cadena) {
-  vector<pair<string, Transicion*>> transicionesPosibles;
+vector<pair<string, Transicion>> Automata::obtenerTransicionesPosibles(string cadena) {
+  vector<pair<string, Transicion>> transicionesPosibles;
   char simbolo = cadena[0];
   for (auto& it : estadoActual_->getTransiciones()) {
     // Verifico si la transición es válida
-    if ((it->getLecturaCadena() == simbolo || it->getLecturaCadena() == '.') &&
-        (it->getLecturaPila() == (pila_.empty() ? '.' : pila_.top()) || it->getLecturaPila() == '.')) {
+    if ((it.getLecturaCadena() == simbolo || it.getLecturaCadena() == '.') &&
+        (it.getLecturaPila() == (pila_.empty() ? '.' : pila_.top()) || it.getLecturaPila() == '.')) {
       // Si la transición es válida, la agrego a las transiciones posibles
       transicionesPosibles.push_back(make_pair(cadena, it));
     }
@@ -118,7 +120,7 @@ vector<pair<string, Transicion*>> Automata::obtenerTransicionesPosibles(string c
  * @param transiciones Vector de transiciones disponibles
  * @return void
  */
-void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Transicion*>>& transiciones) {
+void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Transicion>>& transiciones) {
   // Mostrar el contenido de la pila
   string pilaStr;
   stack<char> pilaCopia = pila_;
@@ -143,7 +145,7 @@ void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Tran
   // Mostrar las transiciones posibles
   for (auto it = transiciones.begin(); it != transiciones.end(); ++it) {
     cout << left
-    << setw(0) << it->second->getId();
+    << setw(0) << it->second.getId();
     if (next(it) != transiciones.end()) {
       cout << ", ";
     }

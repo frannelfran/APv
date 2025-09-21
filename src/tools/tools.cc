@@ -107,7 +107,7 @@ void leerTransiciones(istringstream is, int id) {
   // Busco el estaddo inicial y siguiente en el conjunto de estados
   Estado* estadoSiguiente = buscarEstado(siguiente), *estadoActual = buscarEstado(actual);
   // Creo la transición y la agrego la transicion
-  Transicion* transicion = new Transicion(id, simbolo_entrada[0], simboloPila[0], estadoActual, estadoSiguiente, topPila);
+  Transicion transicion(id, simbolo_entrada[0], simboloPila[0], estadoActual, estadoSiguiente, topPila);
   for (Estado* e : datos.estados) {
     if (e->getId() == actual) {
       e->agregarTransicion(transicion);

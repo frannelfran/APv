@@ -21,13 +21,13 @@ class Estado {
     // Getters
     inline string getId() const { return id_; }
     inline bool esInicial() const { return inicial_; }
-    inline vector<Transicion*>& getTransiciones() { return transiciones_; }
+    inline vector<Transicion>& getTransiciones() { return transiciones_; }
 
     // Setters
     inline void setInicial() { inicial_ = true; }
 
     // Métodos
-    void agregarTransicion(Transicion* transicion);
+    void agregarTransicion(const Transicion& transicion);
 
     // Sobrecarga de operadores
     friend ostream& operator<<(ostream& os, const Estado& estado);
@@ -35,7 +35,7 @@ class Estado {
 
   private:
     string id_;
-    vector<Transicion*> transiciones_;
+    vector<Transicion> transiciones_;
     bool inicial_;
 };
 

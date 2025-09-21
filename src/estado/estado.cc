@@ -5,7 +5,7 @@
  * @brief Agrega una transición al estado
  * @param transicion La transición a agregar
  */
-void Estado::agregarTransicion(Transicion* transicion) {
+void Estado::agregarTransicion(const Transicion& transicion) {
   transiciones_.push_back(transicion);
 }
 
@@ -14,8 +14,8 @@ void Estado::agregarTransicion(Transicion* transicion) {
  */
 ostream& operator<<(ostream& os, const Estado& estado) {
   os << "---- Transiciones del estado " << estado.id_ << " ----" << endl;
-  for (auto it = estado.transiciones_.begin(); it != estado.transiciones_.end(); ++it) {
-    os << *it << endl;
+  for (auto& it : estado.transiciones_) {
+    os << it << endl;
   }
   return os;
 }
