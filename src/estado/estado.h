@@ -23,6 +23,7 @@ class Estado {
     // Getters
     inline string getId() const { return id_; }
     inline bool esInicial() const { return inicial_; }
+    inline set<Transicion> getTransiciones() const { return transiciones_; }
 
     // Setters
     inline void setInicial() { inicial_ = true; }

@@ -20,11 +20,17 @@ class Automata {
     // Sobrecarga de operadores
     friend ostream& operator<<(ostream& os, const Automata& automata);
 
+    // Métodos
+    void ejecutar(string cadena);
+    bool esValida(const string& cadena) const;
+    void reiniciar();
+
   private:
     set<Estado*> estados_;
     Alfabeto alfabetoEntrada_;
     Alfabeto alfabetoPila_;
-    stack<string> pila_;
+    stack<char> pila_;
+    string topPila_;
     Estado* estadoActual_;
 };
 

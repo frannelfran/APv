@@ -21,6 +21,10 @@ class Transicion {
     Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* siguiente, const string& apilar);
     ~Transicion() = default;
 
+    // Getters
+    inline char getLecturaCadena() const { return lecturaCadena_; }
+    inline char getLecturaPila() const { return lecturaPila_; }
+
     // Métodos
     Estado* ejecutar(stack<char>& pila) const;
 
