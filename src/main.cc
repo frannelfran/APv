@@ -31,21 +31,19 @@ int main(int argc, char* argv[]) {
     
     while (true) {
       cout << "Cadena ? (0 para salir) ";
-      //cin >> cadena;
+      cin >> cadena;
       if (cadena == "0") {
         break;
       }
-      cout << "------------------------------------------------------------" << endl;
-      cout << left
-      << setw(15) << "Estado actual"
-      << setw(15) << "Cadena"
-      << setw(15) << "Pila"
-      << setw(15) << "Transiciones"
-      << endl;
-      cout << "------------------------------------------------------------" << endl;
-      automata.ejecutar("0110");
+      
+      
+      try {
+        automata.ejecutar(cadena);
+      } catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl;
+      }
+      
       automata.reiniciar();
-      break;
     }
 
     return 0;

@@ -30,6 +30,7 @@ class Automata {
     void resetearPila();
     void mostrarTraza(const string& cadena, const vector<Transicion*>& transiciones);
     vector<Transicion*> obtenerTransicionesPosibles(string cadena, vector<Transicion*> transicionesUsadas);
+    bool ejecutarRecursivo(string& cadena, const string& cadenaOriginal);
 
   private:
     set<Estado*> estados_;

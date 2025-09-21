@@ -43,7 +43,13 @@ Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
     for (auto it = apilar_.rbegin(); it != apilar_.rend(); ++it) {
       pila.push(*it);
     }
-    cadena.erase(0, 1);
+  }
+
+  // Solo consumimos de la cadena si el símbolo de lectura no es epsilon
+  if (lecturaCadena_ != '.') {
+    if (!cadena.empty()) {
+      cadena.erase(0, 1);
+    }
   }
 
   pila_ = pila; // Actualizo la pila interna de la transición
