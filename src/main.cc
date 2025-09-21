@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
       if (cadena == "0") {
         break;
       }
-      automata.ejecutar(cadena);
+      automata.ejecutar("0110");
       automata.reiniciar();
     }
 

@@ -24,6 +24,7 @@ class Transicion {
     // Getters
     inline char getLecturaCadena() const { return lecturaCadena_; }
     inline char getLecturaPila() const { return lecturaPila_; }
+    inline int getId() const { return id_; }
 
     // Métodos
     Estado* ejecutar(stack<char>& pila) const;

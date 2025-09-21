@@ -40,16 +40,9 @@ void Automata::ejecutar(string cadena) {
     bool transicionEncontrada = false;
 
     // Recorro las transiciones del estado actual
-    set<Transicion> transiciones = estadoActual_->getTransiciones();
-    for (const Transicion& transicion : transiciones) {
-      // Si la transicion coincide con el símbolo de entrada y el símbolo en la cima de la pila
-      if (transicion.getLecturaCadena() == simbolo && (transicion.getLecturaPila() == '.' || (!pila_.empty() && transicion.getLecturaPila() == pila_.top()))) {
-        // Ejecuto la transición
-        estadoActual_ = transicion.ejecutar(pila_);
-        transicionEncontrada = true;
-        break;
-      }
-    }
+    vector<pair<string, Transicion>> transiciones = obtenerTransicionesPosibles(cadena);
+    mostrarTraza(cadena, transiciones);
+    
 
     if (!transicionEncontrada) {
       throw runtime_error("Error: No se encontró una transición válida.");
@@ -65,6 +58,65 @@ void Automata::ejecutar(string cadena) {
   } else {
     cout << "La cadena pertenece al lenguaje" << endl;
   }
+}
+
+/**
+ * @brief Método para obtener las transiciones posibles desde el estado actual con un símbolo dado
+ * @param cadena Cadena de entrada
+ * @return Vector de pares (cadena restante, transición)
+ */
+vector<pair<string, Transicion>> Automata::obtenerTransicionesPosibles(string cadena) {
+  vector<pair<string, Transicion>> transicionesPosibles;
+  char simbolo = cadena[0];
+  for (const Transicion& transicion : estadoActual_->getTransiciones()) {
+    // Verifico si la transición es válida
+    if ((transicion.getLecturaCadena() == simbolo || transicion.getLecturaCadena() == '.') &&
+        (transicion.getLecturaPila() == (pila_.empty() ? '.' : pila_.top()) || transicion.getLecturaPila() == '.')) {
+      // Si la transición es válida, la agrego a las transiciones posibles
+      transicionesPosibles.push_back(make_pair(cadena, transicion));
+    }
+  }
+  return transicionesPosibles;
+}
+
+/**
+ * @brief Método para mostrar la traza de la ejecución del autómata
+ * @param cadena Cadena de entrada
+ * @param transiciones Vector de transiciones disponibles
+ * @return void
+ */
+void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Transicion>>& transiciones) {
+  cout << "------------------------------------------------------------" << endl;
+  cout << left
+  << setw(15) << "Estado actual"
+  << setw(15) << "Cadena"
+  << setw(15) << "Pila"
+  << setw(15) << "Transiciones"
+  << endl;
+  cout << "------------------------------------------------------------" << endl;
+
+  // Muestro la información
+  // Mostrar el contenido de la pila
+  string pilaStr;
+  stack<char> pilaCopia = pila_;
+  while (!pilaCopia.empty()) {
+    pilaStr = pilaCopia.top() + pilaStr;
+    pilaCopia.pop();
+  }
+
+  cout << left
+  << setw(15) << estadoActual_->getId()
+  << setw(15) << cadena
+  << setw(15) << pilaStr;
+
+  // Mostrar las transiciones posibles
+  for (auto it = transiciones.begin(); it != transiciones.end(); ++it) {
+    cout << (*it).second.getId();
+    if (next(it) != transiciones.end()) {
+      cout << ", ";
+    }
+  }
+  cout << endl;
 }
 
 /**

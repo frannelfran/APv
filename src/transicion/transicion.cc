@@ -42,7 +42,6 @@ Estado* Transicion::ejecutar(stack<char>& pila) const {
       pila.push(*it);
     }
   }
-
   // Retornamos el estado siguiente
   return siguiente_;
 }

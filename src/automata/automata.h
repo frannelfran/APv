@@ -2,7 +2,9 @@
 #include "../alfabeto/alfabeto.h"
 #include "../transicion/transicion.h"
 #include "../estado/estado.h"
+#include <iomanip> // Para std::setw
 #include <stack> // Para la pila
+#include <vector>
 
 #ifndef AUTOMATA_H
 #define AUTOMATA_H
@@ -24,6 +26,8 @@ class Automata {
     void ejecutar(string cadena);
     bool esValida(const string& cadena) const;
     void reiniciar();
+    void mostrarTraza(const string& cadena, const vector<pair<string, Transicion>>& transiciones);
+    vector<pair<string, Transicion>> obtenerTransicionesPosibles(string cadena);
 
   private:
     set<Estado*> estados_;
