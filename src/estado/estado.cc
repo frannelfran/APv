@@ -5,8 +5,8 @@
  * @brief Agrega una transición al estado
  * @param transicion La transición a agregar
  */
-void Estado::agregarTransicion(const Transicion& transicion) {
-  transiciones_.insert(transicion);
+void Estado::agregarTransicion(Transicion* transicion) {
+  transiciones_.push_back(transicion);
 }
 
 /**

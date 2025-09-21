@@ -1,14 +1,12 @@
 #pragma once
 #include <iostream>
-#include <set>
+#include "../transicion/transicion.h" // Incluir primero Transicion
+
 
 #ifndef ESTADO_H
 #define ESTADO_H
 
 using namespace std;
-
-// Forward declaration para evitar dependencia circular
-class Transicion;
 
 /**
  * @class Estado
@@ -23,13 +21,13 @@ class Estado {
     // Getters
     inline string getId() const { return id_; }
     inline bool esInicial() const { return inicial_; }
-    inline set<Transicion>& getTransiciones() { return transiciones_; }
+    inline vector<Transicion*>& getTransiciones() { return transiciones_; }
 
     // Setters
     inline void setInicial() { inicial_ = true; }
 
     // Métodos
-    void agregarTransicion(const Transicion& transicion);
+    void agregarTransicion(Transicion* transicion);
 
     // Sobrecarga de operadores
     friend ostream& operator<<(ostream& os, const Estado& estado);
@@ -37,7 +35,7 @@ class Estado {
 
   private:
     string id_;
-    set<Transicion> transiciones_; // Volvemos a objetos
+    vector<Transicion*> transiciones_;
     bool inicial_;
 };
 

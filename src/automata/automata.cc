@@ -31,60 +31,62 @@ Automata::Automata(const set<Estado*>& estados, const Alfabeto& alfabetoEntrada,
  * @return void
  */
 void Automata::ejecutar(string cadena) {
-    string cadenaOriginal = cadena;
+  string cadenaOriginal = cadena;
 
-    if (!esValida(cadena)) {
-        throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
+  if (!esValida(cadena)) {
+    throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
+  }
+
+  vector<pair<string, Transicion*>> transicionesNoUsadas;
+
+  while (!cadena.empty() || !pila_.empty()) {
+    vector<pair<string, Transicion*>> transicionesPosibles = obtenerTransicionesPosibles(cadena);
+    mostrarTraza(cadena, transicionesPosibles);
+
+    bool avance = false;
+
+    for (auto& t : transicionesPosibles) {
+      if (!t.second->getUsada()) {
+        // Aplicar la transición
+        cadena = t.first;
+        estadoActual_ = t.second->ejecutar(pila_, cadena);
+        avance = true;
+        break;
+      }
     }
 
-    vector<pair<string, Transicion*>> transicionesNoUsadas;
+    if (!avance) {
+      // No hay transiciones disponibles, hacemos backtracking
+      if (!transicionesNoUsadas.empty()) {
+        auto t = transicionesNoUsadas.front();
+        transicionesNoUsadas.erase(transicionesNoUsadas.begin());
 
-    while (!cadena.empty() || !pila_.empty()) {
-        vector<pair<string, Transicion*>> transicionesPosibles = obtenerTransicionesPosibles(cadena);
+        cadena = t.first;
+        estadoActual_ = t.second->getActual();
+        pila_ = t.second->getPila();
 
-        mostrarTraza(cadena, transicionesPosibles);
-
-        bool avance = false;
-
-        for (auto& t : transicionesPosibles) {
-            if (!t.second->getUsada()) {
-                // Aplicar la transición
-                cadena = t.first;
-                estadoActual_ = t.second->ejecutar(pila_, cadena);
-                avance = true;
-                break;
-            }
-        }
-
-        if (!avance) {
-            // No hay transiciones disponibles, hacemos backtracking
-            if (!transicionesNoUsadas.empty()) {
-                auto t = transicionesNoUsadas.back();
-                transicionesNoUsadas.pop_back();
-
-                cadena = t.first;
-                estadoActual_ = t.second->getActual();
-                pila_ = t.second->getPila();
-
-                cout << "Restaurando a transición " << t.second->getId() << endl;
-                continue;
-            } else {
-                // No hay más alternativas
-                break;
-            }
-        }
-
-        // Guardamos transiciones no usadas para backtracking
-        for (auto& t : transicionesPosibles) {
-            if (!t.second->getUsada()) {
-                transicionesNoUsadas.push_back(t);
-            }
-        }
+				if (cadenaOriginal == cadena) {
+					// Si hemos vuelto al estado inicial y la cadena es la original, salimos
+					resetearPila();
+				}
+        continue;
+      } else {
+        // No hay más alternativas
+        break;
+      }
     }
 
-    mostrarTraza(cadena, vector<pair<string, Transicion*>>());
+    // Guardamos transiciones no usadas para backtracking
+    for (auto& t : transicionesPosibles) {
+      if (!t.second->getUsada()) {
+        transicionesNoUsadas.push_back(t);
+      }
+    }
+  }
 
-    if (!pila_.empty()) {
+  mostrarTraza(cadena, vector<pair<string, Transicion*>>());
+
+  if (!pila_.empty()) {
     cout << "La cadena no pertenece al lenguaje" << endl;
   } else {
     cout << "La cadena pertenece al lenguaje" << endl;
@@ -101,10 +103,10 @@ vector<pair<string, Transicion*>> Automata::obtenerTransicionesPosibles(string c
   char simbolo = cadena[0];
   for (auto& it : estadoActual_->getTransiciones()) {
     // Verifico si la transición es válida
-    if ((it.getLecturaCadena() == simbolo || it.getLecturaCadena() == '.') &&
-        (it.getLecturaPila() == (pila_.empty() ? '.' : pila_.top()) || it.getLecturaPila() == '.')) {
+    if ((it->getLecturaCadena() == simbolo || it->getLecturaCadena() == '.') &&
+        (it->getLecturaPila() == (pila_.empty() ? '.' : pila_.top()) || it->getLecturaPila() == '.')) {
       // Si la transición es válida, la agrego a las transiciones posibles
-      transicionesPosibles.push_back(make_pair(cadena, const_cast<Transicion*>(&it)));
+      transicionesPosibles.push_back(make_pair(cadena, it));
     }
   }
   return transicionesPosibles;

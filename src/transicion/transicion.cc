@@ -34,14 +34,8 @@ Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
     } else if (pila.top() != lecturaPila_) { // Si no coincide el símbolo en la cima de la pila
       throw runtime_error("Error: El símbolo en la cima de la pila es '" + string(1, pila.top()) + "', pero se esperaba '" + string(1, lecturaPila_) + "'.");
     }
-    
     // Si coincide, desapilamos
     pila.pop();
-  }
-
-  if (lecturaCadena_ == '.') {
-    // No hago nada con la cadena
-    
   }
 
   // Apilamos los símbolos indicados en apilar_ (si no es epsilon)
@@ -51,7 +45,6 @@ Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
     }
     cadena.erase(0, 1);
   }
-
   usada_ = true; // Marco la transición como usada
   pila_ = pila; // Guardo el estado de la pila en la transición
   return siguiente_;
