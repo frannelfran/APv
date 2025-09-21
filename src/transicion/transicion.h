@@ -30,7 +30,7 @@ class Transicion {
     stack<char> getPila() const { return pila_; }
 
     // Métodos
-    Estado* ejecutar(stack<char>& pila);
+    Estado* ejecutar(stack<char>& pila, string& cadena);
 
     // Sobrecarga de operadores
     inline bool operator<(const Transicion& other) const { return id_ < other.id_; }

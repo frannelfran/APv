@@ -22,14 +22,15 @@ Transicion::Transicion(const int& id, const char& lecturaCadena, const char& lec
 /**
  * @brief Ejecuta la transicion, modificando lo que hay en la pila
  * @param pila Pila del autómata
+ * @param cadena Cadena de entrada
  * @return Estado siguiente al que se transita
  */
-Estado* Transicion::ejecutar(stack<char>& pila) {
+Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
   // Si el símbolo a leer de la pila es diferente de epsilon
   if (lecturaPila_ != '.') {
     // Si la pila está vacía, no se puede leer
     if (pila.empty()) {
-      throw runtime_error("Error: La pila está vacía, no se puede leer el símbolo '" + string(1, lecturaPila_) + "'.");
+      throw runtime_error("La pila está vacía, no se puede leer el símbolo '" + string(1, lecturaPila_) + "'.");
     } else if (pila.top() != lecturaPila_) { // Si no coincide el símbolo en la cima de la pila
       throw runtime_error("Error: El símbolo en la cima de la pila es '" + string(1, pila.top()) + "', pero se esperaba '" + string(1, lecturaPila_) + "'.");
     }
@@ -38,11 +39,16 @@ Estado* Transicion::ejecutar(stack<char>& pila) {
     pila.pop();
   }
 
+  if (lecturaCadena_ == '.') {
+    // No hago nada con la cadena
+  }
+
   // Apilamos los símbolos indicados en apilar_ (si no es epsilon)
   if (apilar_ != ".") {
     for (auto it = apilar_.rbegin(); it != apilar_.rend(); ++it) {
       pila.push(*it);
     }
+    cadena.erase(0, 1);
   }
 
   usada_ = true; // Marco la transición como usada

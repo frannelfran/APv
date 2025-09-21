@@ -49,11 +49,9 @@ void Automata::ejecutar(string cadena) {
     for (auto& it : transicionesPosibles) {
       if (!it.second.getUsada()) {
         cadena = it.first;
-        estadoActual_ = it.second.ejecutar(pila_);
+        estadoActual_ = it.second.ejecutar(pila_, cadena);
         break;
       } else {
-        // Elimino la transicion de las posibles transiciones
-        transicionesPosibles.erase(remove(transicionesPosibles.begin(), transicionesPosibles.end(), it), transicionesPosibles.end());
       }
     }
 
@@ -73,15 +71,11 @@ void Automata::ejecutar(string cadena) {
         continue;
       }
     }
-    for (auto it : transicionesPosibles) {
+    for (auto& it : transicionesPosibles) {
       if (!it.second.getUsada()) {
         transicionesNoUsadas.push_back(it);
       }
     }
-
-
-    // Avanzo en la cadena de entrada
-    cadena.erase(0, 1);
   }
   mostrarTraza(cadena, transicionesPosibles);
   // Al finalizar la cadena, verifico si la pila está vacía
