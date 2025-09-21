@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     
     while (true) {
       cout << "Cadena ? (0 para salir) ";
-      cin >> cadena;
+      //cin >> cadena;
       if (cadena == "0") {
         break;
       }
@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
       cout << "------------------------------------------------------------" << endl;
       automata.ejecutar("0110");
       automata.reiniciar();
+      break;
     }
 
     return 0;

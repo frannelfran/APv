@@ -26,12 +26,14 @@ class Transicion {
     inline char getLecturaPila() const { return lecturaPila_; }
     inline int getId() const { return id_; }
     inline bool getUsada() const { return usada_; }
+    inline Estado* getActual() const { return actual_; }
 
     // Métodos
-    Estado* ejecutar(stack<char>& pila) const;
+    Estado* ejecutar(stack<char>& pila);
 
     // Sobrecarga de operadores
     inline bool operator<(const Transicion& other) const { return id_ < other.id_; }
+    inline bool operator==(const Transicion& other) const { return id_ == other.id_; }
     friend ostream& operator<<(ostream& os, const Transicion& transicion);
 
   private:
@@ -41,7 +43,7 @@ class Transicion {
     Estado* actual_;
     Estado* siguiente_;
     string apilar_;
-    mutable bool usada_ = false;
+    bool usada_;
 };
 
 #endif // TRANSICION_H

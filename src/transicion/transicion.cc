@@ -16,6 +16,7 @@ Transicion::Transicion(const int& id, const char& lecturaCadena, const char& lec
   siguiente_ = siguiente;
   actual_ = actual; 
   apilar_ = apilar;
+  usada_ = false;
 }
 
 /**
@@ -23,7 +24,7 @@ Transicion::Transicion(const int& id, const char& lecturaCadena, const char& lec
  * @param pila Pila del autómata
  * @return Estado siguiente al que se transita
  */
-Estado* Transicion::ejecutar(stack<char>& pila) const {
+Estado* Transicion::ejecutar(stack<char>& pila) {
   // Si el símbolo a leer de la pila es diferente de epsilon
   if (lecturaPila_ != '.') {
     // Si la pila está vacía, no se puede leer

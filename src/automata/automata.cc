@@ -35,46 +35,47 @@ void Automata::ejecutar(string cadena) {
     throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
   }
 
-  vector<pair<string, Transicion>> transiciones;
+  vector<pair<string, Transicion>> transicionesPosibles;
+  vector<pair<string, Transicion>> transicionesNoUsadas;
 
   while (!cadena.empty()) {
     char simbolo = cadena[0];
-    bool transicionEncontrada = false;
 
     // Recorro las transiciones del estado actual
-    transiciones = obtenerTransicionesPosibles(cadena);
-    mostrarTraza(cadena, transiciones);
-    pair<string, Transicion> elegida;
-    // Miro en el vector de transiciones cual es la que no se ha usado para la cadena en la iteracion
-    for (auto it : transiciones) {
+    transicionesPosibles = obtenerTransicionesPosibles(cadena);
+    mostrarTraza(cadena, transicionesPosibles);
+    // Miro en las posibles transiciones si hay alguna que no haya sido usada
+    for (auto& it : transicionesPosibles) {
       if (!it.second.getUsada()) {
-        elegida = it;
-        transicionEncontrada = true;
+        cadena = it.first;
+        estadoActual_ = it.second.ejecutar(pila_);
         break;
       }
     }
-    if (!transicionEncontrada) {
-      throw runtime_error("Error: No se encontró una transición válida.");
+
+    // Almaceno el resto de transiciones no usadas
+    for (auto& it : transicionesPosibles) {
+      if (!it.second.getUsada()) {
+        transicionesNoUsadas.push_back(it);
+      }
     }
 
-    cadena = elegida.first;
-    elegida.second.ejecutar(pila_);
     // Avanzo en la cadena de entrada
     cadena.erase(0, 1);
 
     // Cuento si quedan transiciones sin activar
-    int transicionesPosibles = count_if(transiciones.begin(), transiciones.end(), [](const pair<string, Transicion>& p) { return p.second.getUsada() == false; });
-
-    if (cadena.empty() && transicionesPosibles > 0) {
+    if (cadena.empty() && !pila_.empty()) {
       // Busco aquella transicion que todavía se pueda activar
-      for (auto it : transiciones) {
-        if (it.second.getUsada() == false) {
-          cadena = it.first;
-        }
-      }
+      cadena = transicionesNoUsadas[0].first;
+      estadoActual_ = transicionesNoUsadas[0].second.getActual();
+      // Quito esa transición de las no usadas
+      transicionesNoUsadas.erase(transicionesNoUsadas.begin());
     }
   }
-  mostrarTraza(cadena, transiciones);
+  for (auto& it : transicionesNoUsadas) {
+        cout << it.first << " " << it.second.getId() << endl;
+      }
+  mostrarTraza(cadena, transicionesPosibles);
   // Al finalizar la cadena, verifico si la pila está vacía
   if (!pila_.empty()) {
     cout << "La cadena no pertenece al lenguaje" << endl;
