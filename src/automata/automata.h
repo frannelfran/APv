@@ -4,6 +4,7 @@
 #include "../estado/estado.h"
 #include <iomanip> // Para std::setw
 #include <stack> // Para la pila
+#include <algorithm> // Para reverse
 #include <vector>
 
 #ifndef AUTOMATA_H

@@ -25,6 +25,7 @@ class Transicion {
     inline char getLecturaCadena() const { return lecturaCadena_; }
     inline char getLecturaPila() const { return lecturaPila_; }
     inline int getId() const { return id_; }
+    inline bool getUsada() const { return usada_; }
 
     // Métodos
     Estado* ejecutar(stack<char>& pila) const;
@@ -39,6 +40,7 @@ class Transicion {
     char lecturaPila_;
     Estado* siguiente_;
     string apilar_;
+    mutable bool usada_ = false;
 };
 
 #endif // TRANSICION_H

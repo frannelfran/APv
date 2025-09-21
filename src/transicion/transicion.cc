@@ -42,7 +42,8 @@ Estado* Transicion::ejecutar(stack<char>& pila) const {
       pila.push(*it);
     }
   }
-  // Retornamos el estado siguiente
+
+  usada_ = true; // Marco la transición como usada
   return siguiente_;
 }
 

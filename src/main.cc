@@ -35,6 +35,14 @@ int main(int argc, char* argv[]) {
       if (cadena == "0") {
         break;
       }
+      cout << "------------------------------------------------------------" << endl;
+      cout << left
+      << setw(15) << "Estado actual"
+      << setw(15) << "Cadena"
+      << setw(15) << "Pila"
+      << setw(15) << "Transiciones"
+      << endl;
+      cout << "------------------------------------------------------------" << endl;
       automata.ejecutar("0110");
       automata.reiniciar();
     }

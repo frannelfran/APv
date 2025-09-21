@@ -35,23 +35,46 @@ void Automata::ejecutar(string cadena) {
     throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
   }
 
+  vector<pair<string, Transicion>> transiciones;
+
   while (!cadena.empty()) {
     char simbolo = cadena[0];
     bool transicionEncontrada = false;
 
     // Recorro las transiciones del estado actual
-    vector<pair<string, Transicion>> transiciones = obtenerTransicionesPosibles(cadena);
+    transiciones = obtenerTransicionesPosibles(cadena);
     mostrarTraza(cadena, transiciones);
-    
-
+    pair<string, Transicion> elegida;
+    // Miro en el vector de transiciones cual es la que no se ha usado para la cadena en la iteracion
+    for (auto it : transiciones) {
+      if (!it.second.getUsada()) {
+        elegida = it;
+        transicionEncontrada = true;
+        break;
+      }
+    }
     if (!transicionEncontrada) {
       throw runtime_error("Error: No se encontró una transición válida.");
     }
 
+    cadena = elegida.first;
+    elegida.second.ejecutar(pila_);
     // Avanzo en la cadena de entrada
     cadena.erase(0, 1);
-  }
 
+    // Cuento si quedan transiciones sin activar
+    int transicionesPosibles = count_if(transiciones.begin(), transiciones.end(), [](const pair<string, Transicion>& p) { return p.second.getUsada() == false; });
+
+    if (cadena.empty() && transicionesPosibles > 0) {
+      // Busco aquella transicion que todavía se pueda activar
+      for (auto it : transiciones) {
+        if (it.second.getUsada() == false) {
+          cadena = it.first;
+        }
+      }
+    }
+  }
+  mostrarTraza(cadena, transiciones);
   // Al finalizar la cadena, verifico si la pila está vacía
   if (!pila_.empty()) {
     cout << "La cadena no pertenece al lenguaje" << endl;
@@ -86,16 +109,6 @@ vector<pair<string, Transicion>> Automata::obtenerTransicionesPosibles(string ca
  * @return void
  */
 void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Transicion>>& transiciones) {
-  cout << "------------------------------------------------------------" << endl;
-  cout << left
-  << setw(15) << "Estado actual"
-  << setw(15) << "Cadena"
-  << setw(15) << "Pila"
-  << setw(15) << "Transiciones"
-  << endl;
-  cout << "------------------------------------------------------------" << endl;
-
-  // Muestro la información
   // Mostrar el contenido de la pila
   string pilaStr;
   stack<char> pilaCopia = pila_;
@@ -103,6 +116,8 @@ void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Tran
     pilaStr = pilaCopia.top() + pilaStr;
     pilaCopia.pop();
   }
+
+  reverse(pilaStr.begin(), pilaStr.end());
 
   cout << left
   << setw(15) << estadoActual_->getId()
@@ -116,7 +131,7 @@ void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Tran
       cout << ", ";
     }
   }
-  cout << endl;
+  cout << "\n------------------------------------------------------------" << endl;
 }
 
 /**
