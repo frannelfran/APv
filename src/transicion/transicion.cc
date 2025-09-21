@@ -18,6 +18,36 @@ Transicion::Transicion(const int& id, const char& lecturaCadena, const char& lec
 }
 
 /**
+ * @brief Ejecuta la transicion, modificando lo que hay en la pila
+ * @param pila Pila del autómata
+ * @return Estado siguiente al que se transita
+ */
+Estado* Transicion::ejecutar(stack<char>& pila) const {
+  // Si el símbolo a leer de la pila es diferente de epsilon
+  if (lecturaPila_ != '.') {
+    // Si la pila está vacía, no se puede leer
+    if (pila.empty()) {
+      throw runtime_error("Error: La pila está vacía, no se puede leer el símbolo '" + string(1, lecturaPila_) + "'.");
+    } else if (pila.top() != lecturaPila_) { // Si no coincide el símbolo en la cima de la pila
+      throw runtime_error("Error: El símbolo en la cima de la pila es '" + string(1, pila.top()) + "', pero se esperaba '" + string(1, lecturaPila_) + "'.");
+    }
+    
+    // Si coincide, desapilamos
+    pila.pop();
+  }
+
+  // Apilamos los símbolos indicados en apilar_ (si no es epsilon)
+  if (apilar_ != ".") {
+    for (auto it = apilar_.rbegin(); it != apilar_.rend(); ++it) {
+      pila.push(*it);
+    }
+  }
+
+  // Retornamos el estado siguiente
+  return siguiente_;
+}
+
+/**
  * @overload Sobrecarga del operador de salida para imprimir una transición
  */
 ostream& operator<<(ostream& os, const Transicion& transicion) {

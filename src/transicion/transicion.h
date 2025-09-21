@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <stack> // Para la pila
 
 #ifndef TRANSICION_H
 #define TRANSICION_H
@@ -19,6 +20,9 @@ class Transicion {
     Transicion() = default;
     Transicion(const int& id, const char& lecturaCadena, const char& lecturaPila, Estado* siguiente, const string& apilar);
     ~Transicion() = default;
+
+    // Métodos
+    Estado* ejecutar(stack<char>& pila) const;
 
     // Sobrecarga de operadores
     inline bool operator<(const Transicion& other) const { return id_ < other.id_; }
