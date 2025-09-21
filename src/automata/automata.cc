@@ -44,6 +44,7 @@ void Automata::ejecutar(string cadena) {
 
     // Recorro las transiciones del estado actual
     transicionesPosibles = obtenerTransicionesPosibles(cadena);
+    mostrarTraza(cadena, transicionesPosibles);
     // Miro en las posibles transiciones si hay alguna que no haya sido usada
     for (auto& it : transicionesPosibles) {
       if (!it.second.getUsada()) {
@@ -55,16 +56,10 @@ void Automata::ejecutar(string cadena) {
         transicionesPosibles.erase(remove(transicionesPosibles.begin(), transicionesPosibles.end(), it), transicionesPosibles.end());
       }
     }
-    mostrarTraza(cadena, transicionesPosibles);
 
     // Almaceno el resto de transiciones no usadas
-    for (auto it : transicionesPosibles) {
-      if (!it.second.getUsada()) {
-        transicionesNoUsadas.push_back(it);
-      }
-    }
-
     if (cadena.empty() && !pila_.empty()) {
+      mostrarTraza(cadena, vector<pair<string, Transicion>>());
       // Compruebo que existan transiciones disponibles
       if (!transicionesNoUsadas.empty()) {
         cadena = transicionesNoUsadas.front().first;
@@ -78,6 +73,12 @@ void Automata::ejecutar(string cadena) {
         continue;
       }
     }
+    for (auto it : transicionesPosibles) {
+      if (!it.second.getUsada()) {
+        transicionesNoUsadas.push_back(it);
+      }
+    }
+
 
     // Avanzo en la cadena de entrada
     cadena.erase(0, 1);
@@ -129,12 +130,19 @@ void Automata::mostrarTraza(const string& cadena, const vector<pair<string, Tran
 
   cout << left
   << setw(15) << estadoActual_->getId()
-  << setw(15) << cadena
-  << setw(15) << pilaStr;
+  << setw(15) << (cadena.empty() ? "." : cadena)
+  << setw(15) << (pilaStr.empty() ? "-" : pilaStr);
 
+  if (transiciones.empty()) {
+    cout << setw(15) << "-";
+    cout << "\n------------------------------------------------------------" << endl;
+    return;
+  }
+  
   // Mostrar las transiciones posibles
   for (auto it = transiciones.begin(); it != transiciones.end(); ++it) {
-    cout << (*it).second.getId();
+    cout << left
+    << setw(0) << (*it).second.getId();
     if (next(it) != transiciones.end()) {
       cout << ", ";
     }
