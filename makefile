@@ -19,4 +19,4 @@ $(TARGET): $(SRCS)
 
 clean:
 	@echo "Eliminando ejecutable..."  
-	rm -f $(TARGET)                   
+	rm -f $(TARGET) | rm -rf $(TARGET).dSYM                  
