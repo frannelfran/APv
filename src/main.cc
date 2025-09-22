@@ -21,12 +21,10 @@ int main(int argc, char* argv[]) {
     string nombreFichero = argv[1];
     Tools datos = leerFichero(nombreFichero);
     cout << "Fichero leído correctamente." << endl;
-
     // Creo el automata con los datos leídos
     Automata automata(datos.estados, datos.alfabetos.first, datos.alfabetos.second, datos.topPila);
     
-    cout << automata << endl;
-
+    cout << automata;
     string cadena;
     
     while (true) {
@@ -35,14 +33,8 @@ int main(int argc, char* argv[]) {
       if (cadena == "0") {
         break;
       }
-      
-      
-      try {
-        automata.ejecutar(cadena);
-      } catch (const exception& e) {
-        cerr << "Error: " << e.what() << endl;
-      }
-      
+      mostrarCabecera();
+      automata.ejecutar(cadena);
       automata.reiniciar();
     }
 

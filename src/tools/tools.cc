@@ -180,3 +180,17 @@ void comprobarSimbolo(const char& simbolo) {
     throw runtime_error("El símbolo '" + string(1, simbolo) + "' no pertenece a ningún alfabeto.");
   }
 }
+
+/**
+ * @brief Función para mostrar la cabecera de la traza
+ * @return void
+ */
+void mostrarCabecera() {
+  cout << "------------------------------------------------------------" << endl;
+  cout << left;
+  cout << setw(15) << "Estado actual" 
+  << setw(15) << "Cadena" 
+  << setw(15) << "Pila" 
+  << setw(15) << "Transiciones" << endl;
+  cout << "------------------------------------------------------------" << endl;
+}

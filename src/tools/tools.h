@@ -26,5 +26,6 @@ void leerTransiciones(istringstream is, int id); // Leo las transiciones del fic
 void comprobarEstado(const string& estado); // Compruebo que el estado es válido
 void comprobarSimbolo(const char& simbolo); // Compruebo que el símbolo es válido
 Estado* buscarEstado(const string& estado); // Buscar un estado en el conjunto de estados
+void mostrarCabecera(); // Muestro el inicio de la traza
 
 #endif // TOOLS_H

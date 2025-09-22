@@ -32,16 +32,13 @@ Automata::Automata(const set<Estado*>& estados, const Alfabeto& alfabetoEntrada,
  */
 void Automata::ejecutar(string cadena) {
   if (!esValida(cadena)) {
-    throw runtime_error("Error: La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
+    throw runtime_error("La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
   }
   
   string cadenaOriginal = cadena;
-  reiniciar(); // Asegurar que empezamos desde el estado inicial
   
-  // Utilizamos un enfoque recursivo con backtracking
+  // LLamada recursiva
   bool aceptada = ejecutarRecursivo(cadena, cadenaOriginal);
-  
-  mostrarTraza(cadena, vector<Transicion*>());
   
   if (aceptada) {
     cout << "La cadena pertenece al lenguaje" << endl;
@@ -52,7 +49,7 @@ void Automata::ejecutar(string cadena) {
 
 
 /**
- * @brief Método auxiliar recursivo para la ejecución del autómata con backtracking
+ * @brief Método auxiliar recursivo para la ejecución del autómata
  * @param cadena Cadena de entrada (por referencia para modificar)
  * @param cadenaOriginal Cadena original para mostrar en la traza
  * @return true si la cadena es aceptada, false en caso contrario
@@ -79,27 +76,24 @@ bool Automata::ejecutarRecursivo(string& cadena, const string& cadenaOriginal) {
     stack<char> pilaAnterior = pila_;
     string cadenaAnterior = cadena;
     
-    try {
-      // Ejecutamos la transición
-      estadoActual_ = transicion->ejecutar(pila_, cadena);
-      
-      // Llamada recursiva
-      if (ejecutarRecursivo(cadena, cadenaOriginal)) {
-        return true; // Encontramos un camino exitoso
-      }
-      
-      // Backtracking: restauramos el estado
-      estadoActual_ = estadoAnterior;
-      pila_ = pilaAnterior;
-      cadena = cadenaAnterior;
-      
-    } catch (const runtime_error& e) {
-      // Si hay error en la ejecución de la transición, continuamos con la siguiente
-      estadoActual_ = estadoAnterior;
-      pila_ = pilaAnterior;
-      cadena = cadenaAnterior;
-      continue;
+    // Ejecutamos la transición
+    estadoActual_ = transicion->ejecutar(pila_, cadena);
+    
+    // Llamada recursiva
+    if (ejecutarRecursivo(cadena, cadenaOriginal)) {
+      return true; // Encontramos un camino exitoso
     }
+    
+    // Backtracking: restauramos el estado
+    estadoActual_ = estadoAnterior;
+    pila_ = pilaAnterior;
+    cadena = cadenaAnterior;
+  
+    // Si hay error en la ejecución de la transición, continuamos con la siguiente
+    estadoActual_ = estadoAnterior;
+    pila_ = pilaAnterior;
+    cadena = cadenaAnterior;
+    continue;
   }
   
   return false; // No se encontró camino exitoso
