@@ -16,7 +16,6 @@ Transicion::Transicion(const int& id, const char& lecturaCadena, const char& lec
   siguiente_ = siguiente;
   actual_ = actual; 
   apilar_ = apilar;
-  usada_ = false;
 }
 
 /**
@@ -32,7 +31,7 @@ Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
     if (pila.empty()) {
       throw runtime_error("La pila está vacía, no se puede leer el símbolo '" + string(1, lecturaPila_) + "'.");
     } else if (pila.top() != lecturaPila_) { // Si no coincide el símbolo en la cima de la pila
-      throw runtime_error("Error: El símbolo en la cima de la pila es '" + string(1, pila.top()) + "', pero se esperaba '" + string(1, lecturaPila_) + "'.");
+      throw runtime_error("El símbolo en la cima de la pila es '" + string(1, pila.top()) + "', pero se esperaba '" + string(1, lecturaPila_) + "'.");
     }
     // Si coincide, desapilamos
     pila.pop();
@@ -51,10 +50,6 @@ Estado* Transicion::ejecutar(stack<char>& pila, string& cadena) {
       cadena.erase(0, 1);
     }
   }
-
-  pila_ = pila; // Actualizo la pila interna de la transición
-  cadena_ = cadena; // Actualizo la cadena interna de la transición
-  usada_ = true; // Marco la transición como usada
   return siguiente_;
 }
 

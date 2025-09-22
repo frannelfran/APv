@@ -31,7 +31,6 @@ class Estado {
 
     // Sobrecarga de operadores
     friend ostream& operator<<(ostream& os, const Estado& estado);
-    inline bool operator<(const Estado& other) const { return id_ < other.id_; }
 
   private:
     string id_;
