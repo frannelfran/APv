@@ -28,33 +28,15 @@ Automata::Automata(const set<Estado*>& estados, const Alfabeto& alfabetoEntrada,
 /**
  * @brief Método para ejecutar el autómata con una cadena de entrada
  * @param cadena Cadena de entrada
- * @return void
+ * @return true si la cadena es aceptada, false en caso contrario
  */
-void Automata::ejecutar(string cadena) {
+bool Automata::ejecutar(string cadena) {
   if (!esValida(cadena)) {
     throw runtime_error("La cadena contiene símbolos que no pertenecen al alfabeto de entrada.");
   }
   
   string cadenaOriginal = cadena;
-  
-  // LLamada recursiva
-  bool aceptada = ejecutarRecursivo(cadena, cadenaOriginal);
-  
-  if (aceptada) {
-    cout << "La cadena pertenece al lenguaje" << endl;
-  } else {
-    cout << "La cadena no pertenece al lenguaje" << endl;
-  }
-}
 
-
-/**
- * @brief Método auxiliar recursivo para la ejecución del autómata
- * @param cadena Cadena de entrada (por referencia para modificar)
- * @param cadenaOriginal Cadena original para mostrar en la traza
- * @return true si la cadena es aceptada, false en caso contrario
- */
-bool Automata::ejecutarRecursivo(string& cadena, const string& cadenaOriginal) {
   vector<Transicion*> transicionesPosibles = obtenerTransicionesPosibles(cadena, vector<Transicion*>());
   
   mostrarTraza(cadena, transicionesPosibles);
@@ -80,7 +62,7 @@ bool Automata::ejecutarRecursivo(string& cadena, const string& cadenaOriginal) {
     estadoActual_ = transicion->ejecutar(pila_, cadena);
     
     // Llamada recursiva
-    if (ejecutarRecursivo(cadena, cadenaOriginal)) {
+    if (ejecutar(cadena)) {
       return true; // Encontramos un camino exitoso
     }
     
@@ -143,15 +125,20 @@ void Automata::mostrarTraza(const string& cadena, const vector<Transicion*>& tra
 
   cout << left
   << setw(15) << estadoActual_->getId()
-  << setw(15) << (cadena.empty() ? "." : cadena)
+  << setw(15) << (cadena.empty() ? "-" : cadena)
   << setw(15) << (pilaStr.empty() ? "-" : pilaStr);
 
   if (transiciones.empty()) {
-    cout << setw(15) << "-";
+    // Miro si es la transición final
+    if (cadena.empty() && pila_.empty()) {
+      cout << setw(15) << "w∈L";
+    } else {
+      cout << setw(15) << "∄";
+    }
     cout << "\n------------------------------------------------------------" << endl;
     return;
   }
-  
+
   // Mostrar las transiciones posibles
   for (auto it = transiciones.begin(); it != transiciones.end(); ++it) {
     cout << left

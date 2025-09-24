@@ -34,7 +34,11 @@ int main(int argc, char* argv[]) {
         break;
       }
       mostrarCabecera();
-      automata.ejecutar(cadena);
+      if (automata.ejecutar(cadena)) {
+        cout << "La cadena " << cadena << " pertenece al lenguaje." << endl;
+      } else {
+        cout << "La cadena " << cadena << " no pertenece al lenguaje." << endl;
+      }
       automata.reiniciar();
     }
 

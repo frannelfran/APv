@@ -1,5 +1,5 @@
 #include "estado.h"
-#include "../transicion/transicion.h" // Ahora sí podemos incluir la definición completa
+#include "../transicion/transicion.h"
 
 /**
  * @brief Agrega una transición al estado

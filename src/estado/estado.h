@@ -2,7 +2,6 @@
 #include <iostream>
 #include "../transicion/transicion.h" // Incluir primero Transicion
 
-
 #ifndef ESTADO_H
 #define ESTADO_H
 

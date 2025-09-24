@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// Forward declaration para evitar dependencia circular
+// Para evitar errores con la dependencia circular
 class Estado;
 
 /**
