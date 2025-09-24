@@ -188,7 +188,7 @@ void Automata::reiniciar() {
  */
 bool Automata::esValida(const string& cadena) const {
   for (char simbolo : cadena) {
-    if (!alfabetoEntrada_.pertenece(simbolo)) {
+    if (!alfabetoEntrada_.pertenece(simbolo) && simbolo != '.') {
       return false;
     }
   }
