@@ -75,7 +75,7 @@ friend ostream& operator<<(ostream& os, const Transicion& transicion);
 - **getLecturaCadena():** Devuelve el símbolo que se lee de la cadena de entrada.
 - **getLecturaPila():** Devuelve el símbolo que se lee de la cima de la pila.
 - **getId():** Devuelve el identificador único de la transición.
-- **ejecutar():** Ejecuta la transición, modificando la pila y la cadena según corresponda.
+- **ejecutar(stack<char>& pila, string& cadena):** Ejecuta la transición, modificando la pila y la cadena según corresponda. Recibe como parámetros la pila y la cadena de entrada.
 - **operator<<:** Permite mostrar la transición en formato legible.
 
 ### Clase Estado
@@ -106,7 +106,7 @@ friend ostream& operator<<(ostream& os, const Estado& estado);
 - **esInicial():** Indica si el estado es el estado inicial del autómata.
 - **getTransiciones():** Devuelve las transiciones disponibles desde este estado.
 - **setInicial():** Marca el estado como inicial.
-- **agregarTransicion():** Añade una nueva transición al estado.
+- **agregarTransicion(const Transicion& transicion):** Añade una nueva transición al estado.
 - **operator<<:** Permite mostrar el estado y sus transiciones.
 
 ### Clase Automata
@@ -131,13 +131,14 @@ vector<Transicion*> obtenerTransicionesPosibles(char simbolo, vector<Transicion*
 friend ostream& operator<<(ostream& os, const Automata& automata);
 ```
 - **Constructor:** Inicializa el autómata con sus estados, alfabetos y símbolo inicial de pila.
-- **ejecutar():** Procesa una cadena de entrada y devuelve si es aceptada por el autómata.
-- **esValida():** Verifica si una cadena contiene solo símbolos del alfabeto de entrada.
+- **ejecutar(string cadena):** Procesa una cadena de entrada y devuelve si es aceptada por el autómata.
+- **esValida(const string& cadena) const:** Verifica si una cadena contiene solo símbolos del alfabeto de entrada.
 - **reiniciar():** Restaura el autómata a su estado inicial.
 - **resetearPila():** Reinicia la pila al estado inicial.
-- **mostrarTraza():** Muestra el estado actual del autómata durante la ejecución.
-- **obtenerTransicionesPosibles():** Devuelve las transiciones aplicables en el estado actual.
+- **mostrarTraza(const string& cadena, const vector<Transicion*>& transiciones):** Muestra el estado actual del autómata durante la ejecución.
+- **obtenerTransicionesPosibles(char simbolo, vector<Transicion*> transicionesUsadas):** Devuelve las transiciones aplicables en el estado actual.
 - **operator<<:** Permite mostrar la configuración completa del autómata.
+
 ## Compilación del programa
 Para compilar este programa he creado un archivo `makefile` para automatizar el trabajo, solo basta con ejecutar lo siguiente:
 ```bash
