@@ -147,6 +147,26 @@ Para borrar el ejecutable generado basta con ejecutar lo siguiente:
 ```bash
 make clean
 ```
+## Ejecución del programa
+Para que este programa pueda rrealizar su correcto funcionamiento se le debe pasar un fichero en formato `.txt` con los datos del autómata, el fichero tendra la siguiente estructura:
+```txt
+# Comentarios
+q1 q2 q3 … # conjunto Q
+a1 a2 a3 … # conjunto Σ(*1)
+A1 A2 A3 … # conjunto Γ(*1)
+q1 # estado inicial
+A1 # símbolo inicial de la pila
+# función de transición: (q2, A) ∈ δ (q1, a, A1)
+q1 a^(*2) A1 q2 A^(*3)
+... # cada una de las transiciones en una línea distinta
+
+(*1) Los símbolos contenidos en Σ y en Γ estarán formados por un único carácter.
+(*2) a es un símbolo de (Σ ⋃ ε). En el fichero el símbolo ε se representará por un
+punto (.)
+(*3) A puede ser ε (que se escribirá también en el fichero mediante un punto) o
+estar formado por uno o más símbolos de Γ, que se escribirán sin espacios en
+blanco. Por ejemplo: A = A1A1A1
+```
 
 
 
