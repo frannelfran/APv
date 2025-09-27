@@ -167,6 +167,48 @@ punto (.)
 estar formado por uno o más símbolos de Γ, que se escribirán sin espacios en
 blanco. Por ejemplo: A = A1A1A1
 ```
+Una vez tenido eso en cuenta, basta con ejecutar lo siguiente:
+```bash
+./apv <fichero_entrada>
+```
+### Cosas a tener en cuenta ‼️
+1. Los ficheros deberán estar alojados en el directorio `/data`.
+2. La cadena se introducira por terminal cuando el programa lo pida.
+3. Si se quiere terminar la ejecución, cuando se solicite una cadena de entrada basta con poner `0` y pulsar enter.
 
+## Ejemplo de prueba con el fichero APv-1.txt
+### Ejecución
+```bash
+./apv data/APv-1.txt
+```
+Cuando se ejecute, se mostrará toda la información recogida en el fichero, para este caso la salida sería la siguiente:
+```txt
+Q -> {q2, q1}
+Σ -> {a, b}
+Γ -> {A, S}
+q0 -> q1
+Z0 -> S
+---- Transiciones del estado q2 ----
+(q2, b, A) -> (q2, .) 4
 
-
+---- Transiciones del estado q1 ----
+(q1, a, S) -> (q1, A) 1
+(q1, a, A) -> (q1, AA) 2
+(q1, b, A) -> (q2, .) 3
+```
+Y a continuación se solicitará una cadena para introducir por terminal, una vez introducida, se mostrara la traza que sigue el automata para comprobar si la cadena pertenece o no pertenece al lenguaje. La traza para la cadena `aabb` sería la siguiente:
+```txt
+------------------------------------------------------------
+Estado actual  Cadena         Pila           Transiciones   
+------------------------------------------------------------
+q1             aabb           S              1
+------------------------------------------------------------
+q1             abb            A              2
+------------------------------------------------------------
+q1             bb             AA             3
+------------------------------------------------------------
+q2             b              A              4
+------------------------------------------------------------
+q2             -              -              w∈L          
+------------------------------------------------------------
+```
