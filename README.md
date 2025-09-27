@@ -1,5 +1,5 @@
 # APv
-Para esta práctica yo he decidio representar un autómata por **vaciado de pila (APv)**.
+Para esta práctica yo he decidido representar el funcionamiento de un autómata por **vaciado de pila (APv)**.
 ## Estructura de directorios
 ```
 .
@@ -29,7 +29,7 @@ Para esta práctica yo he decidio representar un autómata por **vaciado de pila
 ```
 ## Estructura del programa
 ### Clase Alfabeto
-Esta clase sirve para represntar tanto el alfabeto de entrada como el alfabeto de la cinta. Tiene los siguientes métodos.
+Esta clase sirve para representar tanto el alfabeto de entrada como el alfabeto de la cinta. Tiene los siguientes métodos.
 #### Métodos principales
 
 ```cpp
@@ -148,7 +148,7 @@ Para borrar el ejecutable generado basta con ejecutar lo siguiente:
 make clean
 ```
 ## Ejecución del programa
-Para que este programa pueda realizar su correcto funcionamiento se le debe pasar un fichero en formato `.txt` con los datos del autómata, el fichero tendra la siguiente estructura:
+Para que este programa pueda realizar su correcto funcionamiento se le debe pasar un fichero en formato `.txt` con los datos del autómata, el fichero tendrá la siguiente estructura:
 ```txt
 # Comentarios
 q1 q2 q3 … # conjunto Q
@@ -173,9 +173,9 @@ Teniendo lo anterior en cuenta, basta con ejecutar lo siguiente:
 ```
 ## Cosas a tener en cuenta ‼️
 1. Los ficheros deberán estar alojados en el directorio `/data`.
-2. La cadena se introducira por terminal cuando el programa lo pida.
+2. La cadena se introducirá por terminal cuando el programa lo pida.
 3. Si se quiere terminar la ejecución, cuando se solicite una cadena de entrada basta con poner `0` y pulsar enter.
-4. Para introducir otro fichero sse debe terminar con la ejecución del programa.
+4. Para introducir otro fichero se debe terminar con la ejecución del programa.
 
 ## Ejemplo de prueba con el fichero APv-1.txt
 El fichero `APv-1.txt` especifica un autómata para reconocer el lenguaje `L = {a^nb^n | n > 0}`.
@@ -201,7 +201,7 @@ Z0 -> S
 (q1, b, A) -> (q2, .) 3
 ```
 ### Traza
-Y a continuación se solicitará una cadena para introducir por terminal, una vez introducida, se mostrara la traza que sigue el automata para comprobar si la cadena pertenece o no pertenece al lenguaje. La traza muestra el `estado actual`, la `cadena`, la `pila` y las `transiciones` posibles a realizar. Para la cadena `aabb` sería la siguiente:
+Y a continuación se solicitará una cadena para introducir por terminal, una vez introducida, se mostrará la traza que sigue el autómata para comprobar si la cadena pertenece o no pertenece al lenguaje. La traza muestra el `estado actual`, la `cadena`, la `pila` y las `transiciones` posibles a realizar. Para la cadena `aabb` sería la siguiente:
 ```txt
 ------------------------------------------------------------
 Estado actual  Cadena         Pila           Transiciones   
@@ -238,4 +238,4 @@ q2             -              A              ∄
 La cadena aaabb no pertenece al lenguaje.
 ```
 ## Importante ⚠️
-Una vez que el programa determine si la cadena introducida por el ususario pertenece o no al lenguaje se procedera a solicitar otra cadena hasta que el usuario termine con la ejecución del programa.
+Una vez que el programa determine si la cadena introducida por el usuario pertenece o no al lenguaje se procederá a solicitar otra cadena hasta que el usuario termine con la ejecución del programa.
