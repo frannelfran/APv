@@ -37,7 +37,7 @@ bool Automata::ejecutar(string cadena) {
   
   string cadenaOriginal = cadena;
 
-  vector<Transicion*> transicionesPosibles = obtenerTransicionesPosibles(cadena, vector<Transicion*>());
+  vector<Transicion*> transicionesPosibles = obtenerTransicionesPosibles(cadena[0], vector<Transicion*>());
   
   mostrarTraza(cadena, transicionesPosibles);
   
@@ -70,27 +70,20 @@ bool Automata::ejecutar(string cadena) {
     estadoActual_ = estadoAnterior;
     pila_ = pilaAnterior;
     cadena = cadenaAnterior;
-  
-    // Si hay error en la ejecución de la transición, continuamos con la siguiente
-    estadoActual_ = estadoAnterior;
-    pila_ = pilaAnterior;
-    cadena = cadenaAnterior;
     continue;
   }
   
   return false; // No se encontró camino exitoso
 }
 
-
 /**
  * @brief Método para obtener las transiciones posibles desde el estado actual
- * @param cadena Cadena de entrada
+ * @param simbolo Cadena de entrada
  * @param transicionesUsadas Vector de transiciones usadas (no utilizado en la nueva implementación)
  * @return Vector de transiciones posibles
  */
-vector<Transicion*> Automata::obtenerTransicionesPosibles(string cadena, vector<Transicion*> transicionesUsadas) {
+vector<Transicion*> Automata::obtenerTransicionesPosibles(char simbolo, vector<Transicion*> transicionesUsadas) {
   vector<Transicion*> transicionesPosibles;
-  char simbolo = cadena.empty() ? '.' : cadena[0];
   char topePila = pila_.empty() ? '.' : pila_.top();
   
   for (auto& transicion : estadoActual_->getTransiciones()) {

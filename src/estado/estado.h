@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 #include "../transicion/transicion.h" // Incluir primero Transicion
 
 #ifndef ESTADO_H
