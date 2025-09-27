@@ -1,5 +1,5 @@
 # APv
-Para esta práctica yo he decidio representar un autómata por vaciado de pila (APv).
+Para esta práctica yo he decidio representar un autómata por **vaciado de pila (APv)**.
 ## Estructura de directorios
 ```
 .
@@ -138,4 +138,15 @@ friend ostream& operator<<(ostream& os, const Automata& automata);
 - **mostrarTraza():** Muestra el estado actual del autómata durante la ejecución.
 - **obtenerTransicionesPosibles():** Devuelve las transiciones aplicables en el estado actual.
 - **operator<<:** Permite mostrar la configuración completa del autómata.
-## Ejecución del programa
+## Compilación del programa
+Para compilar este programa he creado un archivo `makefile` para automatizar el trabajo, solo basta con ejecutar lo siguiente:
+```bash
+make
+```
+Para borrar el ejecutable generado basta con ejecutar lo siguiente:
+```bash
+make clean
+```
+
+
+
