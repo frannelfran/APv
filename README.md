@@ -171,16 +171,20 @@ Teniendo lo anterior en cuenta, basta con ejecutar lo siguiente:
 ```bash
 ./apv <fichero_entrada>
 ```
-### Cosas a tener en cuenta ‼️
+## Cosas a tener en cuenta ‼️
 1. Los ficheros deberán estar alojados en el directorio `/data`.
 2. La cadena se introducira por terminal cuando el programa lo pida.
 3. Si se quiere terminar la ejecución, cuando se solicite una cadena de entrada basta con poner `0` y pulsar enter.
+4. Para introducir otro fichero sse debe terminar con la ejecución del programa.
 
 ## Ejemplo de prueba con el fichero APv-1.txt
+El fichero `APv-1.txt` especifica un autómata para reconocer el lenguaje `L = {a^nb^n | n > 0}`.
+
 ### Ejecución
 ```bash
 ./apv data/APv-1.txt
 ```
+### Visualización
 Cuando se ejecute, se mostrará toda la información recogida en el fichero, para este caso la salida sería la siguiente:
 ```txt
 Q -> {q2, q1}
@@ -196,7 +200,8 @@ Z0 -> S
 (q1, a, A) -> (q1, AA) 2
 (q1, b, A) -> (q2, .) 3
 ```
-Y a continuación se solicitará una cadena para introducir por terminal, una vez introducida, se mostrara la traza que sigue el automata para comprobar si la cadena pertenece o no pertenece al lenguaje. La traza para la cadena `aabb` sería la siguiente:
+### Traza
+Y a continuación se solicitará una cadena para introducir por terminal, una vez introducida, se mostrara la traza que sigue el automata para comprobar si la cadena pertenece o no pertenece al lenguaje. La traza muestra el `estado actual`, la `cadena`, la `pila` y las `transiciones` posibles a realizar. Para la cadena `aabb` sería la siguiente:
 ```txt
 ------------------------------------------------------------
 Estado actual  Cadena         Pila           Transiciones   
@@ -211,4 +216,26 @@ q2             b              A              4
 ------------------------------------------------------------
 q2             -              -              w∈L          
 ------------------------------------------------------------
+La cadena aabb pertenece al lenguaje.
 ```
+Para la cadena `aaabb` la traza sería la siguiente:
+```txt
+------------------------------------------------------------
+Estado actual  Cadena         Pila           Transiciones   
+------------------------------------------------------------
+q1             aaabb          S              1
+------------------------------------------------------------
+q1             aabb           A              2
+------------------------------------------------------------
+q1             abb            AA             2
+------------------------------------------------------------
+q1             bb             AAA            3
+------------------------------------------------------------
+q2             b              AA             4
+------------------------------------------------------------
+q2             -              A              ∄            
+------------------------------------------------------------
+La cadena aaabb no pertenece al lenguaje.
+```
+## Importante ⚠️
+Una vez que el programa determine si la cadena introducida por el ususario pertenece o no al lenguaje se procedera a solicitar otra cadena hasta que el usuario termine con la ejecución del programa.
