@@ -148,7 +148,7 @@ Para borrar el ejecutable generado basta con ejecutar lo siguiente:
 make clean
 ```
 ## Ejecución del programa
-Para que este programa pueda rrealizar su correcto funcionamiento se le debe pasar un fichero en formato `.txt` con los datos del autómata, el fichero tendra la siguiente estructura:
+Para que este programa pueda realizar su correcto funcionamiento se le debe pasar un fichero en formato `.txt` con los datos del autómata, el fichero tendra la siguiente estructura:
 ```txt
 # Comentarios
 q1 q2 q3 … # conjunto Q
@@ -167,7 +167,7 @@ punto (.)
 estar formado por uno o más símbolos de Γ, que se escribirán sin espacios en
 blanco. Por ejemplo: A = A1A1A1
 ```
-Una vez tenido eso en cuenta, basta con ejecutar lo siguiente:
+Teniendo lo anterior en cuenta, basta con ejecutar lo siguiente:
 ```bash
 ./apv <fichero_entrada>
 ```
