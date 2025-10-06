@@ -170,7 +170,7 @@ blanco. Por ejemplo: A = A1A1A1
 ```
 Teniendo lo anterior en cuenta, basta con ejecutar lo siguiente:
 ```bash
-./apv <fichero_entrada>
+./apv ./data/<fichero_entrada>
 ```
 ## Cosas a tener en cuenta ‼️
 1. Los ficheros deberán estar alojados en el directorio `/data`.
@@ -183,7 +183,7 @@ El fichero `APv-1.txt` especifica un autómata para reconocer el lenguaje `L = {
 
 ### Ejecución
 ```bash
-./apv data/APv-1.txt
+./apv ./data/APv-1.txt
 ```
 ### Visualización
 Cuando se ejecute, se mostrará toda la información recogida en el fichero, para este caso la salida sería la siguiente:
