@@ -45,7 +45,7 @@ Tools leerFichero(const string& nombreFichero) {
 
   // Leo el símbolo inicial de la pila
   getline(file, linea);
-  comprobarSimbolo(linea[0]);
+  comprobarSimboloPila(linea[0]);
   datos.topPila = linea;
 
   // Leo las transiciones
@@ -103,7 +103,9 @@ void leerTransiciones(istringstream is, int id) {
   // Compruebo los estados
   comprobarEstado(actual), comprobarEstado(siguiente);
   // Compruebo los símbolos
-  comprobarSimbolo(simbolo_entrada[0]), comprobarSimbolo(simboloPila[0]), comprobarSimbolo(topPila[0]);
+  comprobarSimboloEntrada(simbolo_entrada[0]);
+  comprobarSimboloPila(simboloPila[0]);
+  comprobarSimboloPila(topPila[0]);
   // Busco el estaddo inicial y siguiente en el conjunto de estados
   Estado* estadoSiguiente = buscarEstado(siguiente), *estadoActual = buscarEstado(actual);
   // Creo la transición y la agrego la transicion
@@ -159,25 +161,24 @@ void comprobarEstado(const string& estado) {
 }
 
 /**
- * @brief Función para comprobar que el símbolo pertenece al alfabeto del autómata
- * @param simbolo Símbolo a comprobar
- * @return void
+ * @brief Comprueba que un símbolo pertenece al alfabeto de entrada (Σ)
  */
-void comprobarSimbolo(const char& simbolo) {
-  bool pertenece = false;
-
-  if (simbolo == '.') { // epsilon siempre pertenece
-    return;
-  } else if (datos.alfabetos.first.pertenece(simbolo)) {
-    pertenece = true;
-  } else if (datos.alfabetos.second.pertenece(simbolo)) {
-    pertenece = true;
-  }
-
-  if (!pertenece) {
+void comprobarSimboloEntrada(const char& simbolo) {
+  if (simbolo == '.') return; // epsilon siempre permitido en lectura de cadena
+  if (!datos.alfabetos.first.pertenece(simbolo)) {
     cerr << "Σ -> " << datos.alfabetos.first << endl;
+    throw runtime_error(string("El símbolo '") + simbolo + "' no pertenece al alfabeto de entrada (Σ).");
+  }
+}
+
+/**
+ * @brief Comprueba que un símbolo pertenece al alfabeto de la pila (Γ)
+ */
+void comprobarSimboloPila(const char& simbolo) {
+  if (simbolo == '.') return; // epsilon siempre permitido en lectura/escritura de pila
+  if (!datos.alfabetos.second.pertenece(simbolo)) {
     cerr << "Γ -> " << datos.alfabetos.second << endl;
-    throw runtime_error("El símbolo '" + string(1, simbolo) + "' no pertenece a ningún alfabeto.");
+    throw runtime_error(string("El símbolo '") + simbolo + "' no pertenece al alfabeto de la pila (Γ).");
   }
 }
 

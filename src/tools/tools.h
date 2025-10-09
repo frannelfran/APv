@@ -24,7 +24,8 @@ void leerEstados(istringstream is); // Leo los estados del fichero
 void leerAlfabeto(istringstream is); // Leo el alfabeto del fichero
 void leerTransiciones(istringstream is, int id); // Leo las transiciones del fichero
 void comprobarEstado(const string& estado); // Compruebo que el estado es válido
-void comprobarSimbolo(const char& simbolo); // Compruebo que el símbolo es válido
+void comprobarSimboloEntrada(const char& simbolo); // Compruebo que el símbolo pertenece al alfabeto de entrada (Σ)
+void comprobarSimboloPila(const char& simbolo); // Compruebo que el símbolo pertenece al alfabeto de la pila (Γ)
 Estado* buscarEstado(const string& estado); // Buscar un estado en el conjunto de estados
 void mostrarCabecera(); // Muestro el inicio de la traza
 
